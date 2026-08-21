@@ -22,15 +22,15 @@ export const site = {
 };
 
 export const nav = [
-  { label: "Journal", href: "/journal" },
-  { label: "Projects", href: "/projects" },
-  { label: "Photography", href: "/photography" },
   { label: "Story", href: "/story" },
+  { label: "Manifest", href: "/manifest" },
+  { label: "Work", href: "/projects" },
+  { label: "Notes", href: "/journal" },
   { label: "Now", href: "/now" },
 ];
 
+// Unverified / placeholder-led archive routes stay out of public navigation
+// until their real source material is installed and QA'd.
 export const navSecondary = [
-  { label: "Expeditions", href: "/expeditions" },
-  { label: "Library", href: "/library" },
   { label: "Contact", href: "/contact" },
 ];
