@@ -10,7 +10,7 @@ export const site = {
     { label: "Founder", org: "4PLANET", href: "https://4planet.org" },
     { label: "Creative", org: "P4NTHER", href: "https://p4nther.no" },
   ],
-  url: "https://oddekalv.com",
+  url: "https://oddekalv.org",
   email: "odin@4planet.org",
   links: {
     instagram: "https://instagram.com/4planet____",
