@@ -4,6 +4,7 @@ import TypeLabel from "@/components/TypeLabel";
 import { formatDate } from "@/lib/utils";
 import type { JournalPost } from "@/lib/types";
 import { cx } from "@/lib/utils";
+import { getJournalVisual } from "@/lib/journalVisuals";
 
 export default function JournalCard({
   post,
@@ -12,13 +13,15 @@ export default function JournalCard({
   post: JournalPost;
   featured?: boolean;
 }) {
+  const image = getJournalVisual(post.slug, post.image);
+
   return (
     <Link
       href={`/journal/${post.slug}`}
       className={cx("group block", featured && "md:grid md:grid-cols-2 md:gap-10 md:items-center")}
     >
       <Media
-        src={post.image}
+        src={image}
         alt={post.title}
         className={cx(
           "w-full",
