@@ -1,189 +1,61 @@
 import Link from "next/link";
-import Hero from "@/components/Hero";
-import SectionHeader from "@/components/SectionHeader";
-import JournalCard from "@/components/JournalCard";
-import PhotoGrid from "@/components/PhotoGrid";
 import Reveal from "@/components/Reveal";
-import CTA from "@/components/CTA";
 import Media from "@/components/Media";
-import TypeLabel from "@/components/TypeLabel";
-import { getLatestJournal, getSelectedPhotography } from "@/lib/content";
-import { site } from "@/content/site";
 
-const currentWork = [
-  {
-    title: "4PLANET",
-    body: "Making ecological action easier to understand and support.",
-    href: "/projects/4planet",
-  },
-  {
-    title: "P4NTHER",
-    body: "Creative studio for ideas, identity, storytelling and systems.",
-    href: "/projects/p4nther",
-  },
-  {
-    title: "Journal",
-    body: "Field notes, essays and reflections from the search for better ways forward.",
-    href: "/journal",
-  },
-  {
-    title: "Photography",
-    body: "A visual archive of nature, people, places and the living world.",
-    href: "/photography",
-  },
-];
+function Label({ children }: { children: React.ReactNode }) {
+  return <p className="font-mono text-[0.7rem] uppercase tracking-label text-ink/45">{children}</p>;
+}
 
-const follow = [
-  { label: "Instagram", href: site.links.instagram },
-  { label: "Substack", href: site.links.substack },
-  { label: "4PLANET", href: site.links.fourplanet },
-  { label: "P4NTHER", href: site.links.p4nther },
-  { label: "Email", href: site.links.email },
+const relationship = ["LOVE", "UNDERSTANDING", "SOLUTIONS", "PARTICIPATION", "MORE LIFE"];
+const howIWork = [
+  ["01","STORY","Makes the living world visible, human and worth caring about."],
+  ["02","ECOLOGICAL INTELLIGENCE","Makes relationships, dependencies and consequences easier to understand."],
+  ["03","INNOVATION","Finds and develops better ways to solve real problems."],
+  ["04","CULTURE","Makes ecological action more relevant, desirable and socially alive."],
+  ["05","SYSTEMS & CAPITAL","Gives good ideas the partnerships, structure and capacity to last."],
 ];
 
 export default function HomePage() {
-  const latest = getLatestJournal(3);
-  const photos = getSelectedPhotography(6);
-
   return (
     <>
-      <Hero />
-
-      {/* THE QUESTION */}
-      <section className="container-editorial mt-32 md:mt-40">
-        <div className="grid gap-10 md:grid-cols-12">
-          <div className="md:col-span-4">
-            <TypeLabel index="01" accent>
-              The Question
-            </TypeLabel>
+      <section className="container-editorial grid items-center gap-12 pt-20 md:min-h-[88svh] md:grid-cols-12 md:gap-16 md:pt-24">
+        <div className="md:col-span-7">
+          <Label>ODIN ODDEKALV_ / NORWAY</Label>
+          <h1 className="mt-8 font-medium text-ink [font-size:clamp(44px,7vw,104px)] [letter-spacing:-0.045em] [line-height:0.96]">ALT JEG ELSKER LEVER.</h1>
+          <p className="mt-4 font-medium tracking-tight text-ink/55 [font-size:clamp(20px,2.4vw,32px)] [letter-spacing:-0.02em]">Everything I love is alive.</p>
+          <p className="mt-8 max-w-xl text-lg leading-relaxed text-ink/70">I build culture, ecological intelligence and practical pathways that help people protect and strengthen the living world.</p>
+          <div className="mt-9 flex flex-wrap gap-x-8 gap-y-3">
+            <Link href="/story" className="group inline-flex items-center gap-2 font-mono text-sm uppercase tracking-label text-ink transition-colors hover:text-blue"><span className="link-underline">Read the story</span><span>→</span></Link>
+            <a href="https://4planet.org" target="_blank" rel="noreferrer" className="group inline-flex items-center gap-2 font-mono text-sm uppercase tracking-label text-blue"><span className="link-underline">Explore 4PLANET_</span><span>↗</span></a>
           </div>
-          <Reveal className="md:col-span-8">
-            <p className="text-display-md font-medium tracking-tight text-ink">
-              Everything begins with a simple question:{" "}
-              <span className="text-blue">
-                how can humans and nature thrive together?
-              </span>
-            </p>
-            <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink/70">
-              Through photography, storytelling, systems thinking and projects
-              such as 4PLANET, Odin explores ideas, people and places that may
-              help us move towards a better future for life on Earth.
-            </p>
-          </Reveal>
+        </div>
+        <div className="md:col-span-5"><Media src="/images/hero.svg" alt="ODIN field archive visual." className="aspect-[4/5] w-full md:aspect-[3/4]" /></div>
+      </section>
+
+      <section className="container-editorial mt-28 md:mt-40">
+        <div className="grid gap-12 md:grid-cols-12"><Label>Why I build</Label><Reveal className="md:col-span-8 md:col-start-5"><p className="max-w-2xl text-2xl font-medium leading-snug tracking-tight text-ink md:text-3xl">I grew up close to the sea, the forest and a family life shaped by environmental responsibility. Nature was never a theme. It was part of the world we belonged to.</p><p className="mt-8 max-w-xl text-lg leading-relaxed text-ink/65">After my father died, responsibility did not become clearer. It became unavoidable.</p><blockquote className="mt-10 max-w-xl border-l-2 border-blue pl-6 text-xl font-medium leading-relaxed text-ink">When you love something and see it under threat, you cannot only watch.</blockquote></Reveal></div>
+      </section>
+
+      <section className="container-editorial mt-28 md:mt-40">
+        <Reveal><h2 className="max-w-4xl text-display-md font-medium leading-[1.1] tracking-tight text-ink">How can people and the living world flourish together?</h2><p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink/65">Sustainability has never felt like a large enough ambition. Healthy living systems do more than endure. They create the conditions for more life.</p><p className="mt-12 font-medium tracking-tight text-ink [font-size:clamp(36px,5vw,72px)] [letter-spacing:-0.03em]">SYMBIOSIS</p><p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink/65">Not a human society standing outside nature, but one that understands it is part of it — and learns to strengthen the living systems it depends on.</p><div className="mt-12 flex flex-wrap items-center gap-x-3 gap-y-2">{relationship.map((step,i)=><span key={step} className="flex items-center gap-3"><span className="font-mono text-xs uppercase tracking-label text-ink/70">{step}</span>{i < relationship.length - 1 && <span className="font-mono text-blue/50">→</span>}</span>)}</div></Reveal>
+      </section>
+
+      <section className="container-editorial mt-28 md:mt-40">
+        <Label>What I build</Label>
+        <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink/65">The work moves from story and understanding to innovation, participation and real-world action.</p>
+        <div className="mt-12 border-y border-ink/10">
+          {[["01","4PLANET_","The main work — living planet intelligence and ecological action infrastructure."],["02","P4NTHER_","Culture, visual worlds, editorial work, film and creative experimentation."],["03","ODIN_","Writing, field observation, photography and the human origin layer behind the work."]].map(([n,title,copy]) => <Reveal key={n}><div className="grid gap-4 border-b border-ink/10 py-8 last:border-b-0 md:grid-cols-12"><span className="font-mono text-xs text-blue md:col-span-1">{n}</span><h3 className="text-2xl font-medium tracking-tight text-ink md:col-span-4">{title}</h3><p className="text-lg leading-relaxed text-ink/65 md:col-span-7">{copy}</p></div></Reveal>)}
         </div>
       </section>
 
-      {/* CURRENT WORK */}
-      <section className="container-editorial mt-28 md:mt-36">
-        <SectionHeader index="02" label="Current Work" title="What is being built" />
-        <div className="mt-12 grid gap-px overflow-hidden border border-ink/10 bg-ink/10 sm:grid-cols-2">
-          {currentWork.map((w, i) => (
-            <Reveal key={w.title} delay={i * 0.05}>
-              <Link
-                href={w.href}
-                className="group flex h-full flex-col bg-paper p-8 transition-colors hover:bg-blue/[0.03]"
-              >
-                <span className="font-mono text-xs text-ink/30">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="mt-6 text-2xl font-medium tracking-tight text-ink transition-colors group-hover:text-blue">
-                  {w.title}
-                </h3>
-                <p className="mt-3 leading-relaxed text-ink/65">{w.body}</p>
-              </Link>
-            </Reveal>
-          ))}
-        </div>
+      <section className="container-editorial mt-28 md:mt-40">
+        <Label>How I work</Label>
+        <div className="mt-10 grid gap-px overflow-hidden border border-ink/10 bg-ink/10 md:grid-cols-5">{howIWork.map(([n,title,copy]) => <div key={n} className="flex h-full flex-col bg-paper p-6"><span className="font-mono text-xs text-blue">{n}</span><h3 className="mt-3 font-mono text-[0.7rem] uppercase tracking-label text-ink">{title}</h3><p className="mt-3 text-sm leading-relaxed text-ink/65">{copy}</p></div>)}</div>
+        <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink/70">The aim is not to communicate concern more elegantly. It is to make better participation and better solutions easier to build.</p>
       </section>
 
-      {/* LATEST JOURNAL */}
-      <section className="container-editorial mt-28 md:mt-36">
-        <div className="flex items-end justify-between">
-          <SectionHeader index="03" label="Latest Journal" title="Field notes & essays" />
-          <CTA href="/journal" className="hidden shrink-0 md:inline-flex">
-            All entries
-          </CTA>
-        </div>
-        <div className="mt-12 grid gap-x-8 gap-y-12 md:grid-cols-3">
-          {latest.map((post, i) => (
-            <Reveal key={post.slug} delay={i * 0.05}>
-              <JournalCard post={post} />
-            </Reveal>
-          ))}
-        </div>
-        <CTA href="/journal" className="mt-10 md:hidden">
-          All entries
-        </CTA>
-      </section>
-
-      {/* SELECTED PHOTOGRAPHY */}
-      <section className="container-editorial mt-28 md:mt-36">
-        <div className="flex items-end justify-between">
-          <SectionHeader index="04" label="Selected Photography" title="Evidence from the field" />
-          <CTA href="/photography" className="hidden shrink-0 md:inline-flex">
-            Full archive
-          </CTA>
-        </div>
-        <div className="mt-12">
-          <PhotoGrid photos={photos} showFilters={false} />
-        </div>
-        <CTA href="/photography" className="mt-4 md:hidden">
-          Full archive
-        </CTA>
-      </section>
-
-      {/* STORY SNAPSHOT */}
-      <section className="container-editorial mt-28 md:mt-36">
-        <div className="grid items-center gap-10 md:grid-cols-12">
-          <Reveal className="md:col-span-5">
-            <Media src="/images/portrait.svg" alt="Odin Oddekalv" className="aspect-[4/5] w-full" />
-          </Reveal>
-          <Reveal className="md:col-span-7" delay={0.08}>
-            <TypeLabel index="05" accent>
-              Story
-            </TypeLabel>
-            <p className="mt-5 text-display-md font-medium tracking-tight text-ink">
-              Some people inherit businesses. Some inherit money. Odin inherited
-              a question.
-            </p>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink/70">
-              How can humans live on Earth without destroying the systems that
-              make life possible? A childhood close to nature, a family history
-              in environmental work, and a slow shift from fighting problems to
-              building better systems.
-            </p>
-            <CTA href="/story" className="mt-8">
-              Read the story
-            </CTA>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* FOLLOW THE JOURNEY */}
-      <section className="container-editorial mt-28 md:mt-36">
-        <Reveal className="border-t border-ink/10 pt-10">
-          <TypeLabel index="06" accent>
-            Follow the journey
-          </TypeLabel>
-          <div className="mt-6 flex flex-col gap-px overflow-hidden border-y border-ink/10 bg-ink/10">
-            {follow.map((f) => (
-              <a
-                key={f.label}
-                href={f.href}
-                target="_blank"
-                rel="noreferrer"
-                className="group flex items-center justify-between bg-paper px-1 py-6 transition-colors hover:bg-blue/[0.03]"
-              >
-                <span className="text-2xl font-medium tracking-tight text-ink transition-colors group-hover:text-blue md:text-3xl">
-                  {f.label}
-                </span>
-                <span className="font-mono text-sm text-ink/40 transition-transform duration-300 ease-editorial group-hover:translate-x-1 group-hover:text-blue">
-                  ↗
-                </span>
-              </a>
-            ))}
-          </div>
-        </Reveal>
+      <section className="container-editorial mt-28 border-t border-ink/10 pt-16 md:mt-40 md:pt-24">
+        <Reveal><p className="max-w-3xl text-display-md font-medium leading-[1.1] tracking-tight text-ink">We do not stand outside the living world. We are part of it.</p><p className="mt-10 font-mono text-sm uppercase tracking-label text-blue">For all that lives.</p></Reveal>
       </section>
     </>
   );
