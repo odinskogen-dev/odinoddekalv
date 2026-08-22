@@ -10,19 +10,24 @@ const plexMono = IBM_Plex_Mono({ subsets: ["latin"], variable: "--font-plex-mono
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: { default: "Odin Oddekalv — Exploring better ways for humans and nature to thrive together", template: "%s — Odin Oddekalv" },
-  description: "Odin Oddekalv is a Norwegian founder, storyteller and builder working across ecological intelligence, culture and practical systems for a living world.",
-  keywords: ["Odin Oddekalv", "4PLANET", "P4NTHER", "nature", "ecology", "photography", "systems", "Norway"],
+  title: { default: "Odin Oddekalv — The living world came first", template: "%s — Odin Oddekalv" },
+  description: "Odin Oddekalv is a Norwegian founder, photographer and storyteller working across nature, culture and systems — and building 4PLANET in response.",
+  keywords: ["Odin Oddekalv", "4PLANET", "P4NTHER", "nature", "ecology", "photography", "field", "Norway"],
   authors: [{ name: site.name }],
   openGraph: {
     type: "website",
-    title: "Odin Oddekalv — Exploring better ways for humans and nature to thrive together",
-    description: "A Norwegian founder, storyteller and builder working across ecological intelligence, culture and practical systems for a living world.",
+    title: "Odin Oddekalv — The living world came first",
+    description: "A life spent exploring how humans can thrive without destroying the living world we depend on.",
     siteName: site.name,
-    images: [{ url: "/images/og-image.svg", width: 1200, height: 630, alt: site.name }],
-    locale: "en",
+    images: [{ url: "/images/odin/faroe-portrait-02.jpg", alt: "Odin Oddekalv in the field" }],
+    locale: "en_GB",
   },
-  twitter: { card: "summary_large_image", title: "Odin Oddekalv", description: "Exploring better ways for humans and nature to thrive together.", images: ["/images/og-image.svg"] },
+  twitter: {
+    card: "summary_large_image",
+    title: "Odin Oddekalv — The living world came first",
+    description: "A life spent exploring how humans can thrive without destroying the living world we depend on.",
+    images: ["/images/odin/faroe-portrait-02.jpg"],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
