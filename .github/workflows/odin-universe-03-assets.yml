@@ -1,0 +1,60 @@
+name: ODIN Universe 03 — Curated Assets
+
+on:
+  push:
+    branches:
+      - build/odin-universe-03
+    paths:
+      - '.github/workflows/odin-universe-03-assets.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: build/odin-universe-03
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download founder-attested curated masters from canonical FOTOBANK
+        run: |
+          python -m pip install --quiet gdown pillow
+          mkdir -p odin-oddekalv/public/images/odin/universe03
+          python - <<'PY'
+          import os, subprocess
+          from PIL import Image
+
+          files = {
+            'storms-end.jpg': '13Pyl0bOA7uic4VjTb-8Wole4UhR3kEBA',
+            'samuel.jpg': '1jVQnUciTjtEKreO6HRXo5SYgAJZ9XZ4D',
+            'moonwalk.jpg': '1nAB-_oksKV1HnvhECZ8ltADVsJoWvBeM',
+            'im-hungry.jpg': '1XvZAt1kCQMTbTzMzimMGq5WMmLqhZ-gk',
+            'lofoten-handshake.jpg': '1mgqq1tQVWMuZIl_fTe1kEbUWb7xSqJtx',
+            'village-life.jpg': '1PcVj2HXAuuswXsJGjAU1sp4FF7rT5MWt',
+          }
+          outdir = 'odin-oddekalv/public/images/odin/universe03'
+          for name, file_id in files.items():
+              out = os.path.join(outdir, name)
+              subprocess.run(['gdown', '--id', file_id, '-O', out], check=True)
+              with Image.open(out) as im:
+                  im.verify()
+              if os.path.getsize(out) < 50_000:
+                  raise RuntimeError(f'{name} is unexpectedly small')
+              print(name, os.path.getsize(out))
+          PY
+      - name: Commit curated assets
+        run: |
+          git config user.name "4PLANET Build"
+          git config user.email "build@4planet.org"
+          git add odin-oddekalv/public/images/odin/universe03
+          if git diff --cached --quiet; then
+            echo "Assets already present."
+            exit 0
+          fi
+          git commit -m "ODIN Universe 03: add curated photo masters"
+          git push origin HEAD:build/odin-universe-03
