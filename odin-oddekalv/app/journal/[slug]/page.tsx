@@ -56,7 +56,8 @@ export default function JournalPostPage({ params }: { params: { slug: string } }
         <div className="mx-auto max-w-reading">
           <Markdown>{post.body}</Markdown>
           <div className="mt-16 border-t border-ink/10 pt-8">
-            <p className="font-mono text-[0.65rem] uppercase tracking-label text-blue">ODIN_</p>
+            <img src="/images/odin/odin-signature-blue.webp" alt="Odin" className="h-auto w-[7.75rem]" />
+            <p className="mt-3 font-mono text-[0.58rem] uppercase tracking-label text-ink/35">Odin Oddekalv · ODIN_</p>
           </div>
           <div className="mt-10 flex flex-wrap gap-2 border-t border-ink/10 pt-8">
             {post.tags.map((t) => <span key={t} className="border border-blue/30 px-2 py-0.5 font-mono text-[0.65rem] uppercase tracking-label text-blue">#{t}</span>)}
