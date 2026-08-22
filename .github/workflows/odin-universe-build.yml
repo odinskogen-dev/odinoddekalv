@@ -3,7 +3,7 @@ name: Odin Universe Build
 on:
   push:
     branches:
-      - build/odin-universe-01
+      - build/odin-universe-03
   pull_request:
     branches:
       - main
