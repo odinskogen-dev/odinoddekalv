@@ -26,3 +26,44 @@ jobs:
           cache-dependency-path: odin-oddekalv/package-lock.json
       - run: npm ci
       - run: npm run build
+
+  verify-preview:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for Cloudflare branch preview and verify core rooms
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://build-odin-universe-03.odinoddekalv.pages.dev"
+          routes=("/" "/story/" "/field/" "/field/faroe-islands/" "/photography/" "/work/" "/archive/" "/press/")
+
+          ok=0
+          for attempt in $(seq 1 16); do
+            echo "Preview check attempt $attempt/16"
+            code=$(curl -L -sS -o /tmp/home.html --max-time 20 -w '%{http_code}' "$base/" || true)
+            if [ "$code" = "200" ] && grep -q "The living world came first" /tmp/home.html; then
+              ok=1
+              break
+            fi
+            sleep 15
+          done
+
+          if [ "$ok" -ne 1 ]; then
+            echo "Cloudflare preview did not become ready with expected ODIN Universe 03 marker."
+            exit 1
+          fi
+
+          for route in "${routes[@]}"; do
+            code=$(curl -L -sS -o /tmp/route.html --max-time 20 -w '%{http_code}' "$base$route" || true)
+            echo "$route -> $code"
+            test "$code" = "200"
+          done
+
+          grep -q "GO OUTSIDE" <(curl -L -sS --max-time 20 "$base/field/")
+          grep -q "MORE WHALES" <(curl -L -sS --max-time 20 "$base/field/faroe-islands/")
+          grep -q "THE WORLD" <(curl -L -sS --max-time 20 "$base/photography/")
+          grep -q "THEREFORE" <(curl -L -sS --max-time 20 "$base/work/")
+          grep -q "EVIDENCE" <(curl -L -sS --max-time 20 "$base/archive/")
+          grep -q "SHORT BIO" <(curl -L -sS --max-time 20 "$base/press/")
+          echo "ODIN Universe 03 preview is healthy."
