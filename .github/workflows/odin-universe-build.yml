@@ -36,13 +36,13 @@ jobs:
         run: |
           set -euo pipefail
           base="https://build-odin-universe-03.odinoddekalv.pages.dev"
-          routes=("/" "/story/" "/field/" "/field/faroe-islands/" "/photography/" "/work/" "/archive/" "/press/")
+          routes=("/" "/story/" "/field/" "/field/faroe-islands/" "/photography/" "/work/" "/archive/" "/press/" "/manifest/")
 
           ok=0
           for attempt in $(seq 1 16); do
             echo "Preview check attempt $attempt/16"
             code=$(curl -L -sS -o /tmp/home.html --max-time 20 -w '%{http_code}' "$base/" || true)
-            if [ "$code" = "200" ] && grep -q "The living world came first" /tmp/home.html; then
+            if [ "$code" = "200" ] && grep -q "The living world came first" /tmp/home.html && grep -q "Selected photographs" /tmp/home.html; then
               ok=1
               break
             fi
@@ -50,7 +50,7 @@ jobs:
           done
 
           if [ "$ok" -ne 1 ]; then
-            echo "Cloudflare preview did not become ready with expected ODIN Universe 03 marker."
+            echo "Cloudflare preview did not become ready with expected ODIN Universe 03 Round 2 markers."
             exit 1
           fi
 
@@ -62,8 +62,15 @@ jobs:
 
           grep -q "GO OUTSIDE" <(curl -L -sS --max-time 20 "$base/field/")
           grep -q "MORE WHALES" <(curl -L -sS --max-time 20 "$base/field/faroe-islands/")
-          grep -q "THE WORLD" <(curl -L -sS --max-time 20 "$base/photography/")
+          grep -q "SELECTED 04" <(curl -L -sS --max-time 20 "$base/photography/")
           grep -q "THEREFORE" <(curl -L -sS --max-time 20 "$base/work/")
           grep -q "EVIDENCE" <(curl -L -sS --max-time 20 "$base/archive/")
           grep -q "SHORT BIO" <(curl -L -sS --max-time 20 "$base/press/")
-          echo "ODIN Universe 03 preview is healthy."
+          grep -q "ALT JEG ELSKER LEVER" <(curl -L -sS --max-time 20 "$base/manifest/")
+
+          signature_code=$(curl -L -sS -o /tmp/signature.webp --max-time 20 -w '%{http_code}' "$base/images/odin/odin-signature-blue.webp" || true)
+          echo "/images/odin/odin-signature-blue.webp -> $signature_code"
+          test "$signature_code" = "200"
+          test -s /tmp/signature.webp
+
+          echo "ODIN Universe 03 Round 2 preview is healthy."
