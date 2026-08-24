@@ -1,11 +1,11 @@
 // content/site.ts
-// Site-wide configuration. Edit links and identity here.
+// ODIN_ site-wide identity and room architecture.
 
 export const site = {
   name: "Odin Oddekalv",
   wordmark: "ODIN ODDEKALV_",
   shortmark: "ODIN_",
-  tagline: "Exploring better ways for humans and nature to thrive together.",
+  tagline: "A life spent exploring how humans can thrive without destroying the living world we depend on.",
   roles: [
     { label: "Founder", org: "4PLANET", href: "https://4planet.org" },
     { label: "Creative", org: "P4NTHER", href: "https://p4nther.no" },
@@ -21,15 +21,20 @@ export const site = {
   },
 };
 
+// The front door stays intentionally small. Deeper rooms live in the footer and
+// in the homepage room index rather than turning the header into a sitemap.
 export const nav = [
   { label: "Story", href: "/story" },
+  { label: "Field", href: "/field" },
   { label: "Photography", href: "/photography" },
-  { label: "Work", href: "/projects" },
+  { label: "Work", href: "/work" },
   { label: "Notes", href: "/journal" },
-  { label: "Now", href: "/now" },
 ];
 
 export const navSecondary = [
+  { label: "Archive", href: "/archive" },
+  { label: "Press", href: "/press" },
   { label: "Origin text", href: "/manifest" },
+  { label: "Now", href: "/now" },
   { label: "Contact", href: "/contact" },
 ];

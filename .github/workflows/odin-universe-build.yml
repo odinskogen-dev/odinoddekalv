@@ -3,7 +3,7 @@ name: Odin Universe Build
 on:
   push:
     branches:
-      - build/odin-universe-01
+      - main
   pull_request:
     branches:
       - main
@@ -26,3 +26,49 @@ jobs:
           cache-dependency-path: odin-oddekalv/package-lock.json
       - run: npm ci
       - run: npm run build
+
+  verify-live:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify oddekalv.org after Cloudflare Pages deploy
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://oddekalv.org"
+          ok=0
+          for attempt in $(seq 1 20); do
+            echo "Live check attempt $attempt/20"
+            code=$(curl -L -sS -o /tmp/home.html --max-time 20 -w '%{http_code}' "$base/" || true)
+            if [ "$code" = "200" ] && grep -q "The living world came first" /tmp/home.html; then
+              notes=$(curl -L -sS --max-time 20 "$base/journal/" || true)
+              photography=$(curl -L -sS --max-time 20 "$base/photography/" || true)
+              if grep -q "A Future Worth Choosing" <<<"$notes" && grep -q "SELECTED 08" <<<"$photography"; then
+                ok=1
+                break
+              fi
+            fi
+            sleep 15
+          done
+
+          test "$ok" = "1"
+
+          routes=("/story/" "/field/" "/field/faroe-islands/" "/photography/" "/journal/" "/journal/future-worth-choosing/" "/work/" "/archive/" "/press/" "/manifest/")
+          for route in "${routes[@]}"; do
+            code=$(curl -L -sS -o /tmp/route.html --max-time 20 -w '%{http_code}' "$base$route" || true)
+            echo "$route -> $code"
+            test "$code" = "200"
+          done
+
+          grep -q "MORE WHALES" <(curl -L -sS --max-time 20 "$base/field/faroe-islands/")
+          grep -q "PEOPLE ARE INFRASTRUCTURE" <(curl -L -sS --max-time 20 "$base/journal/people-are-infrastructure/")
+          grep -q "THEREFORE" <(curl -L -sS --max-time 20 "$base/work/")
+          grep -q "SHORT BIO" <(curl -L -sS --max-time 20 "$base/press/")
+          grep -q "ALT JEG ELSKER LEVER" <(curl -L -sS --max-time 20 "$base/manifest/")
+
+          signature_code=$(curl -L -sS -o /tmp/signature.webp --max-time 20 -w '%{http_code}' "$base/images/odin/odin-signature-blue.webp" || true)
+          test "$signature_code" = "200"
+          test -s /tmp/signature.webp
+
+          echo "ODIN Universe live health gate passed."
