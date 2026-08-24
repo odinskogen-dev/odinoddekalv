@@ -44,7 +44,8 @@ jobs:
             if [ "$code" = "200" ] && grep -q "The living world came first" /tmp/home.html; then
               notes=$(curl -L -sS --max-time 20 "$base/journal/" || true)
               photography=$(curl -L -sS --max-time 20 "$base/photography/" || true)
-              if grep -q "A Future Worth Choosing" <<<"$notes" && grep -q "SELECTED 08" <<<"$photography"; then
+              prints=$(curl -L -sS --max-time 20 "$base/prints/" || true)
+              if grep -q "A Future Worth Choosing" <<<"$notes" && grep -q "PHOTOGRAPHY · SELECTED ARCHIVE" <<<"$photography" && grep -q "Photographs, made physical" <<<"$prints"; then
                 ok=1
                 break
               fi
@@ -54,7 +55,7 @@ jobs:
 
           test "$ok" = "1"
 
-          routes=("/story/" "/field/" "/field/faroe-islands/" "/photography/" "/journal/" "/journal/future-worth-choosing/" "/work/" "/archive/" "/press/" "/manifest/")
+          routes=("/story/" "/field/" "/field/faroe-islands/" "/photography/" "/prints/" "/journal/" "/journal/future-worth-choosing/" "/work/" "/archive/" "/press/" "/manifest/")
           for route in "${routes[@]}"; do
             code=$(curl -L -sS -o /tmp/route.html --max-time 20 -w '%{http_code}' "$base$route" || true)
             echo "$route -> $code"
