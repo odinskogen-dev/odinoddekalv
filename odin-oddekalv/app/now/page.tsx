@@ -7,13 +7,12 @@ export const metadata: Metadata = { title: "Now", description: "What Odin Oddeka
 
 const focus = [
   "Building 4PLANET",
-  "Developing the Odin Oddekalv story and archive",
-  "Writing field notes and essays",
-  "Developing P4NTHER as a distinct cultural layer",
-  "Exploring better ways for humans and nature to thrive together",
+  "Writing and photographing from the field",
+  "Developing P4NTHER as a cultural and creative layer",
+  "Turning research and experience into clearer ways to help",
 ];
 
-const updated = "Current · Oslo / the field";
+const updated = "Current · Norway / the field";
 
 export default function NowPage() {
   return (
@@ -23,7 +22,7 @@ export default function NowPage() {
         <ul className="divide-y divide-ink/10 border-y border-ink/10">
           {focus.map((f, i) => <li key={f} className="flex items-baseline gap-5 py-6"><span className="font-mono text-xs text-blue">{String(i + 1).padStart(2, "0")}</span><span className="text-xl tracking-tight text-ink md:text-2xl">{f}</span></li>)}
         </ul>
-        <p className="mt-10 leading-relaxed text-ink/65">The through-line is the same: a search for how humans and the rest of life can thrive together — followed through real work rather than a finished answer.</p>
+        <p className="mt-10 leading-relaxed text-ink/65">The thread running through it is simple: understand the living world better, make useful work, and keep testing the ideas against reality.</p>
         <CTA href="/journal" className="mt-8">Latest notes</CTA>
       </Reveal>
     </div>
