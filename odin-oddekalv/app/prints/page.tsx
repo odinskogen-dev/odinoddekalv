@@ -26,7 +26,7 @@ const prints = [
   {
     title: "Bergen Reflections",
     image:
-      "https://cdn.fourthwall.com/customizations/sh_75dbb360-ca9e-4bb9-a601-0c9684bbe723/47488d3c-5c44-47a7-81b1-e8ed8f0d2d35.jpeg",
+      "https://cdn.fourthwall.com/customizations/sh_75dbbb360-ca9e-4bb9-a601-0c9684bbe723/47488d3c-5c44-47a7-81b1-e8ed8f0d2d35.jpeg",
     href: `${store}/products/bergen-reflections-fine-art-print`,
   },
   {
@@ -46,57 +46,65 @@ const prints = [
 export default function PrintsPage() {
   return (
     <div className="pt-14 md:pt-20">
-      <header className="container-editorial pb-10 md:pb-14">
+      <header className="container-editorial pb-10 md:pb-16">
         <Reveal>
           <div className="grid gap-8 border-b border-ink/10 pb-8 md:grid-cols-12 md:items-end">
-            <div className="md:col-span-7">
+            <div className="md:col-span-8">
               <p className="font-mono text-[0.64rem] uppercase tracking-label text-ink/42">
                 PHOTOGRAPHY · OPEN EDITION PRINTS
               </p>
-              <h1 className="mt-4 max-w-3xl text-4xl font-medium tracking-tight text-ink md:text-6xl">
-                Photographs, made physical.
+              <h1 className="mt-4 max-w-4xl font-medium tracking-tight text-ink [font-size:clamp(46px,7vw,100px)] [letter-spacing:-0.045em] [line-height:0.92]">
+                Photographs,<br />made physical.
               </h1>
             </div>
-            <div className="max-w-lg md:col-span-4 md:col-start-9">
+            <div className="max-w-lg md:col-span-3 md:col-start-10">
               <p className="text-base leading-relaxed text-ink/55">
-                A small first edition from the wider photographic archive. Printed only when ordered on museum-quality matte paper.
+                A first selection from the photographic archive. Printed only when ordered on museum-quality matte paper.
               </p>
               <Link
                 href="/photography"
                 className="mt-5 inline-flex font-mono text-[0.64rem] uppercase tracking-label text-ink/48 transition-colors hover:text-blue"
               >
-                View the photographic archive →
+                View archive →
               </Link>
             </div>
           </div>
         </Reveal>
       </header>
 
-      <main className="mx-auto max-w-[1900px] px-2 pb-20 md:px-4 md:pb-28">
-        <div className="grid gap-x-1 gap-y-12 md:grid-cols-2">
+      <main className="pb-20 md:pb-32">
+        <div className="space-y-20 md:space-y-32">
           {prints.map((print, index) => (
-            <Reveal key={print.href} delay={Math.min(index * 0.03, 0.12)}>
+            <Reveal key={print.href} delay={Math.min(index * 0.025, 0.1)}>
               <article className="group">
                 <a href={print.href} target="_blank" rel="noreferrer" className="block">
-                  <div className="overflow-hidden bg-stone-100">
+                  <div className="mx-auto w-full max-w-[2000px] overflow-hidden bg-ink">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={print.image}
                       alt={`${print.title}, photographed by Odin Oddekalv`}
-                      loading={index < 2 ? "eager" : "lazy"}
-                      className="aspect-[3/2] w-full object-cover transition duration-700 ease-editorial group-hover:scale-[1.01] group-hover:brightness-[0.97]"
+                      loading={index === 0 ? "eager" : "lazy"}
+                      className="block max-h-[88svh] w-full object-contain transition duration-700 ease-editorial group-hover:brightness-[0.97]"
                     />
                   </div>
-                  <div className="mt-4 flex items-start justify-between gap-5 border-t border-ink/10 pt-3">
-                    <div>
-                      <h2 className="text-lg font-medium tracking-tight text-ink">{print.title}</h2>
-                      <p className="mt-1 font-mono text-[0.59rem] uppercase tracking-label text-ink/40">
-                        Open edition · Museum-quality matte paper
+
+                  <div className="container-editorial mt-5 grid gap-4 border-t border-ink/10 pt-4 md:grid-cols-12 md:items-start">
+                    <div className="md:col-span-7">
+                      <p className="font-mono text-[0.58rem] uppercase tracking-label text-ink/38">
+                        {String(index + 1).padStart(2, "0")}_ · OPEN EDITION · 5 × 7 IN
+                      </p>
+                      <h2 className="mt-2 text-2xl font-medium tracking-tight text-ink md:text-4xl">
+                        {print.title}
+                      </h2>
+                    </div>
+                    <div className="md:col-span-3 md:col-start-10 md:text-right">
+                      <span className="font-mono text-[0.66rem] uppercase tracking-label text-blue">
+                        Buy print ↗
+                      </span>
+                      <p className="mt-2 text-sm leading-relaxed text-ink/45">
+                        Museum-quality matte paper · Produced on demand
                       </p>
                     </div>
-                    <span className="shrink-0 font-mono text-[0.62rem] uppercase tracking-label text-blue">
-                      Buy print ↗
-                    </span>
                   </div>
                 </a>
               </article>
@@ -104,24 +112,15 @@ export default function PrintsPage() {
           ))}
         </div>
 
-        <Reveal className="container-editorial mt-20 border-t border-ink/10 pt-8 md:mt-28">
+        <Reveal className="container-editorial mt-24 border-t border-ink/10 pt-8 md:mt-36">
           <div className="grid gap-8 md:grid-cols-12">
             <p className="font-mono text-[0.64rem] uppercase tracking-label text-ink/42 md:col-span-3">
               MADE ON DEMAND
             </p>
             <div className="md:col-span-7 md:col-start-5">
               <p className="max-w-2xl text-lg leading-relaxed text-ink/65">
-                Each print is produced only after it is ordered. Printing, payment, shipping and normal production support are handled by the fulfilment partner.
+                Each print is made only after it is ordered. Payment, printing, shipping and normal order support are handled by the fulfilment partner.
               </p>
-              <a
-                href={`${store}/collections/photographic-prints`}
-                target="_blank"
-                rel="noreferrer"
-                className="group mt-6 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-label text-ink transition-colors hover:text-blue"
-              >
-                <span className="link-underline">Open print store</span>
-                <span className="transition-transform duration-300 ease-editorial group-hover:translate-x-1">↗</span>
-              </a>
             </div>
           </div>
         </Reveal>
