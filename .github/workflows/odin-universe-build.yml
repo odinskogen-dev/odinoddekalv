@@ -45,7 +45,7 @@ jobs:
               notes=$(curl -L -sS --max-time 20 "$base/journal/" || true)
               photography=$(curl -L -sS --max-time 20 "$base/photography/" || true)
               prints=$(curl -L -sS --max-time 20 "$base/prints/" || true)
-              if grep -q "A Future Worth Choosing" <<<"$notes" && grep -q "PHOTOGRAPHY · SELECTED ARCHIVE" <<<"$photography" && grep -q "Photographs, made physical" <<<"$prints"; then
+              if grep -q "A Future Worth Choosing" <<<"$notes" && grep -q "PHOTOGRAPHY · SELECTED ARCHIVE" <<<"$photography" && grep -q "OPEN EDITION PRINTS" <<<"$prints"; then
                 ok=1
                 break
               fi
