@@ -15,7 +15,7 @@ export default function FieldPage() {
         </Reveal>
       </header>
 
-      <main className="mx-auto mt-20 max-w-[1800px] md:mt-28 md:px-6">
+      <main className="mx-auto mt-20 max-w-[1800px] pb-16 md:mt-28 md:px-6 md:pb-24">
         <Reveal>
           <article className="border-y border-ink/10 bg-paper">
             <Link href="/field/faroe-islands" className="group grid md:grid-cols-12">
@@ -34,16 +34,6 @@ export default function FieldPage() {
           </article>
         </Reveal>
       </main>
-
-      <section className="container-editorial mt-28 md:mt-40">
-        <Reveal className="grid gap-10 border-y border-ink/10 py-14 md:grid-cols-12">
-          <p className="font-mono text-[0.67rem] uppercase tracking-label text-ink/45 md:col-span-4">MORE FIELD STORIES</p>
-          <div className="md:col-span-7">
-            <p className="text-2xl font-medium leading-snug tracking-tight text-ink md:text-4xl">I will add them when the material is strong enough.</p>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink/56">No placeholder expeditions. A field story belongs here when the photographs, context and writing can carry it properly.</p>
-          </div>
-        </Reveal>
-      </section>
     </div>
   );
 }
