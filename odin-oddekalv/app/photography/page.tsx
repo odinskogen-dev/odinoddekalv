@@ -11,6 +11,7 @@ const photos = [
   { src: "/images/odin/gold/lofoten-handshake.webp", title: "Lofoten Handshake", note: "Lofoten · human scale" },
   { src: "/images/odin/arctic-white-angel.jpg", title: "Arctic White Angel", note: "Non-human presence" },
   { src: "/images/odin/long-way-home.jpg", title: "The Long Way Home", note: "Passage" },
+  { src: "/images/odin/gold/volcanic-void.webp", title: "Volcanic Void", note: "Faroe Islands · scale" },
   { src: "/images/odin/the-future.jpg", title: "The Future", note: "People · action" },
   { src: "/images/odin/hope-4planet.jpg", title: "Hope 4Planet", note: "Possibility" },
   { src: "/images/odin/gold/napoleon.svg", title: "Napoleon", note: "Culture · looking" },
@@ -42,7 +43,7 @@ export default function PhotographyPage() {
     <div className="pt-16 md:pt-24">
       <header className="container-editorial">
         <Reveal>
-          <p className="font-mono text-[0.67rem] uppercase tracking-label text-ink/45">PHOTOGRAPHY · SELECTED 07</p>
+          <p className="font-mono text-[0.67rem] uppercase tracking-label text-ink/45">PHOTOGRAPHY · SELECTED 08</p>
           <h1 className="mt-6 max-w-6xl font-medium tracking-tight text-ink [font-size:clamp(50px,8vw,112px)] [letter-spacing:-0.052em] [line-height:0.9]">THE WORLD,<br />AS I HAVE SEEN IT.</h1>
           <div className="mt-8 grid gap-7 border-t border-ink/10 pt-7 md:grid-cols-12">
             <p className="max-w-2xl text-xl leading-relaxed text-ink/58 md:col-span-7">Not a complete portfolio. A strict edit of images that do different jobs: establish place, make human scale visible, notice other life, hold a passage, document action and widen the world into culture.</p>
@@ -58,8 +59,24 @@ export default function PhotographyPage() {
             <Photo index={1} className="md:col-span-4 md:mt-[13vw]" aspect="aspect-[3/4]" />
             <Photo index={2} className="md:col-span-4 md:col-start-2" aspect="aspect-[3/4]" />
             <Photo index={3} className="md:col-span-7 md:col-start-6 md:mt-24" aspect="aspect-[16/10]" />
-            <Photo index={4} className="md:col-span-6" />
-            <Photo index={5} className="md:col-span-5 md:col-start-8 md:mt-[9vw]" aspect="aspect-[4/5]" />
+          </div>
+        </Reveal>
+      </main>
+
+      <Reveal className="mx-auto mt-24 max-w-[1800px] md:mt-40 md:px-6">
+        <figure>
+          <div className="aspect-[4/3] overflow-hidden bg-stone-100 md:aspect-[2.05/1]">
+            <img src={photos[4].src} alt={`${photos[4].title}, photographed by Odin Oddekalv`} loading="lazy" className="h-full w-full object-cover" />
+          </div>
+          <div className="container-editorial md:px-0"><Caption index={4} title={photos[4].title} note={photos[4].note} /></div>
+        </figure>
+      </Reveal>
+
+      <main className="mx-auto mt-24 max-w-[1800px] px-5 md:mt-36 md:px-6">
+        <Reveal>
+          <div className="grid gap-x-1 gap-y-16 md:grid-cols-12 md:gap-y-28">
+            <Photo index={5} className="md:col-span-6" />
+            <Photo index={6} className="md:col-span-5 md:col-start-8 md:mt-[9vw]" aspect="aspect-[4/5]" />
           </div>
         </Reveal>
       </main>
@@ -69,9 +86,9 @@ export default function PhotographyPage() {
           <div className="md:col-span-8">
             <figure>
               <div className="aspect-[16/10] overflow-hidden bg-black">
-                <img src={photos[6].src} alt="Napoleon, photographed by Odin Oddekalv" loading="lazy" className="h-full w-full object-cover" />
+                <img src={photos[7].src} alt="Napoleon, photographed by Odin Oddekalv" loading="lazy" className="h-full w-full object-cover" />
               </div>
-              <Caption index={6} title={photos[6].title} note={photos[6].note} light />
+              <Caption index={7} title={photos[7].title} note={photos[7].note} light />
             </figure>
           </div>
           <div className="pb-1 md:col-span-3 md:col-start-10">
