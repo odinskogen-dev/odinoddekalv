@@ -26,7 +26,7 @@ const prints = [
   {
     title: "Bergen Reflections",
     image:
-      "https://cdn.fourthwall.com/customizations/sh_75dbbb360-ca9e-4bb9-a601-0c9684bbe723/47488d3c-5c44-47a7-81b1-e8ed8f0d2d35.jpeg",
+      "https://cdn.fourthwall.com/customizations/sh_75dbb360-ca9e-4bb9-a601-0c9684bbe723/47488d3c-5c44-47a7-81b1-e8ed8f0d2d35.jpeg",
     href: `${store}/products/bergen-reflections-fine-art-print`,
   },
   {
