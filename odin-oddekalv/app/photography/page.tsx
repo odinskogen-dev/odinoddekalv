@@ -1,78 +1,60 @@
 import type { Metadata } from "next";
 import Reveal from "@/components/Reveal";
+import PhotoGrid from "@/components/PhotoGrid";
+import type { PhotoItem } from "@/lib/types";
 
 export const metadata: Metadata = {
   title: "Photography",
-  description: "The world, as Odin Oddekalv has seen it — an authored photographic edit across landscape, life, people, movement and culture.",
+  description: "Selected photographs by Odin Oddekalv — landscape, life, people, culture and field work.",
 };
 
-const photos = [
-  { src: "/images/odin/mulafossur.jpg", title: "Múlafossur", note: "Faroe Islands" },
-  { src: "/images/odin/gold/volcanic-void.webp", title: "Volcanic Void", note: "Faroe Islands" },
-  { src: "/images/odin/gold/samuel.webp", title: "Samuel", note: "People" },
-  { src: "/images/odin/gold/im-hungry.webp", title: "I’m Hungry", note: "Other life" },
-  { src: "/images/odin/gold/girson-nmg.webp", title: "Girson NMG", note: "Culture" },
-  { src: "/images/odin/gold/unstad-arctic-surf.webp", title: "Unstad Arctic Surf", note: "Lofoten" },
-  { src: "/images/odin/gold/snohette.webp", title: "Snøhette", note: "Field" },
-  { src: "/images/odin/gold/village-life.webp", title: "Village Life", note: "Faroe Islands" },
-  { src: "/images/odin/gold/seacabin.webp", title: "Sea Cabin", note: "North" },
-  { src: "/images/odin/gold/lofoten-mid-summer.webp", title: "Mid-Summer", note: "Lofoten" },
-  { src: "/images/odin/gold/lofoten-handshake.webp", title: "Lofoten Handshake", note: "People" },
-  { src: "/images/odin/gold/napoleon.webp", title: "Napoleon", note: "Culture" },
-  { src: "/images/odin/arctic-white-angel.jpg", title: "Arctic White Angel", note: "Living" },
-  { src: "/images/odin/long-way-home.jpg", title: "The Long Way Home", note: "Passage" },
-  { src: "/images/odin/gold/aksel-canggu.webp", title: "Canggu", note: "Night / culture" },
+const photos: PhotoItem[] = [
+  { id: "mulafossur", title: "Múlafossur", location: "Faroe Islands", year: "2022", category: "PLACES", caption: "Weather, sea and a village held against the edge of the North Atlantic.", image: "/images/odin/mulafossur.jpg", orientation: "landscape" },
+  { id: "im-hungry", title: "I’m Hungry", location: "Faroe Islands", year: "2022", category: "WILDLIFE", caption: "One of the quieter encounters from the islands.", image: "/images/odin/gold/im-hungry.webp", orientation: "portrait" },
+  { id: "seacabin", title: "Sea Cabin", location: "Norway", year: "", category: "PLACES", caption: "Architecture at the waterline.", image: "/images/odin/gold/seacabin.webp", orientation: "landscape" },
+  { id: "unstad", title: "Unstad Arctic Surf", location: "Lofoten", year: "", category: "PEOPLE", caption: "Cold water, long light and a northern horizon.", image: "/images/odin/gold/unstad-arctic-surf.webp", orientation: "landscape" },
+  { id: "mid-summer", title: "Mid-Summer", location: "Lofoten", year: "", category: "NATURE", caption: "Light that never quite leaves.", image: "/images/odin/gold/lofoten-mid-summer.webp", orientation: "landscape" },
+  { id: "samuel", title: "Samuel", location: "People", year: "", category: "PEOPLE", caption: "Portrait from the wider archive.", image: "/images/odin/gold/samuel.webp", orientation: "portrait" },
+  { id: "volcanic-void", title: "Volcanic Void", location: "Faroe Islands", year: "2022", category: "NATURE", caption: "Human scale disappears quickly here.", image: "/images/odin/gold/volcanic-void.webp", orientation: "landscape" },
+  { id: "arctic-white-angel", title: "Arctic White Angel", location: "North Atlantic", year: "", category: "WILDLIFE", caption: "A portrait of another life looking back.", image: "/images/odin/arctic-white-angel.jpg", orientation: "portrait" },
+  { id: "village-life", title: "Village Life", location: "Faroe Islands", year: "2022", category: "PLACES", caption: "The islands are lived-in places, not scenery.", image: "/images/odin/gold/village-life.webp", orientation: "landscape" },
+  { id: "girson", title: "Girson NMG", location: "Culture", year: "", category: "CULTURE", caption: "Music, light and the human world belong in the archive too.", image: "/images/odin/gold/girson-nmg.webp", orientation: "portrait" },
+  { id: "napoleon", title: "Napoleon", location: "Culture", year: "", category: "CULTURE", caption: "History, objects and institutions are part of how we see the present.", image: "/images/odin/gold/napoleon.webp", orientation: "portrait" },
+  { id: "canggu", title: "Canggu", location: "Culture / night", year: "", category: "CULTURE", caption: "A different register of the same world.", image: "/images/odin/gold/aksel-canggu.webp", orientation: "portrait" },
+  { id: "snohette", title: "Snøhette", location: "Field", year: "", category: "EXPEDITIONS", caption: "Movement, weather and the work of getting there.", image: "/images/odin/gold/snohette.webp", orientation: "portrait" },
+  { id: "walk-line", title: "Walk the Line", location: "Faroe Islands", year: "2022", category: "NATURE", caption: "A small figure at the edge of a much larger system.", image: "/images/odin/gold/walk-the-line.webp", orientation: "landscape" },
+  { id: "long-way-home", title: "The Long Way Home", location: "Faroe Islands", year: "2022", category: "FIELD NOTES", caption: "The return is part of the story.", image: "/images/odin/long-way-home.jpg", orientation: "landscape" },
+  { id: "handshake", title: "Lofoten Handshake", location: "Lofoten", year: "", category: "PEOPLE", caption: "A human moment inside a much larger landscape.", image: "/images/odin/gold/lofoten-handshake.webp", orientation: "landscape" },
+  { id: "we-will-tell", title: "We Will Tell", location: "Operation: Bloody Fjords", year: "2022", category: "SEA SHEPHERD", caption: "Documentary work from the Sea Shepherd campaign in the Faroe Islands.", image: "/images/odin/gold/we-will-tell.webp", orientation: "landscape" },
+  { id: "the-grind", title: "The Grind", location: "Operation: Bloody Fjords", year: "2022", category: "SEA SHEPHERD", caption: "A graphic documentary frame from the whale hunt. Viewer discretion advised.", image: "/images/odin/gold/the-grind.webp", orientation: "landscape" },
+  { id: "storming-beach", title: "Storming Beach", location: "Operation: Bloody Fjords", year: "2022", category: "SEA SHEPHERD", caption: "Sea Shepherd field documentation from the shoreline.", image: "/images/odin/gold/storming-beach.webp", orientation: "landscape" },
+  { id: "not-all-tradition", title: "Not All Tradition Is Worth Keeping", location: "Operation: Bloody Fjords", year: "2022", category: "SEA SHEPHERD", caption: "A documentary frame about the collision between tradition, culture and animal life.", image: "/images/odin/gold/not-all-tradition.webp", orientation: "landscape" },
+  { id: "end-whaling", title: "End Whaling", location: "Operation: Bloody Fjords", year: "2022", category: "SEA SHEPHERD", caption: "Campaign documentation from the Faroe Islands.", image: "/images/odin/gold/end-whaling.webp", orientation: "landscape" },
+  { id: "tears-flowers", title: "Tears and Flowers for the Whales", location: "Operation: Bloody Fjords", year: "2022", category: "SEA SHEPHERD", caption: "A quieter frame after the violence.", image: "/images/odin/gold/tears-and-flowers.webp", orientation: "landscape" },
+  { id: "future", title: "The Future", location: "Norway", year: "", category: "FIELD NOTES", caption: "Action is also made of ordinary people showing up.", image: "/images/odin/the-future.jpg", orientation: "landscape" },
+  { id: "field-portrait", title: "In the Field", location: "Faroe Islands", year: "2022", category: "FIELD NOTES", caption: "Field portrait during the Faroe Islands work.", image: "/images/odin/faroe-field-walk.jpg", orientation: "portrait" },
 ];
-
-function Caption({ index, title, note }: { index: number; title: string; note: string }) {
-  return <figcaption className="mt-3 flex items-baseline justify-between gap-4 font-mono text-[0.6rem] uppercase tracking-label text-ink/40"><span>{String(index + 1).padStart(2, "0")} · {title}</span><span>{note}</span></figcaption>;
-}
-
-function Photo({ index, className = "" }: { index: number; className?: string }) {
-  const photo = photos[index];
-  return <figure className={className}><div className="overflow-hidden bg-stone-100"><img src={photo.src} alt={`${photo.title}, photographed by Odin Oddekalv`} loading={index < 2 ? "eager" : "lazy"} className="block h-auto w-full transition-transform duration-700 ease-editorial hover:scale-[1.006]" /></div><Caption index={index} title={photo.title} note={photo.note} /></figure>;
-}
 
 export default function PhotographyPage() {
   return (
-    <div className="pt-16 md:pt-24">
-      <header className="container-editorial">
+    <div className="pt-14 md:pt-20">
+      <header className="container-editorial pb-9 md:pb-12">
         <Reveal>
-          <p className="font-mono text-[0.67rem] uppercase tracking-label text-ink/45">PHOTOGRAPHY · SELECTED 15</p>
-          <h1 className="mt-6 max-w-6xl font-medium tracking-tight text-ink [font-size:clamp(50px,8vw,112px)] [letter-spacing:-0.052em] [line-height:0.9]">THE WORLD,<br />AS I HAVE SEEN IT.</h1>
-          <div className="mt-8 grid gap-7 border-t border-ink/10 pt-7 md:grid-cols-12">
-            <p className="max-w-2xl text-xl leading-relaxed text-ink/58 md:col-span-7">Places, people, animals, weather, action and culture. A small selection from a much larger archive.</p>
-            <p className="font-mono text-[0.62rem] uppercase leading-relaxed tracking-label text-ink/38 md:col-span-4 md:col-start-9">Every photograph in this room was made by Odin Oddekalv.</p>
+          <div className="grid gap-6 border-b border-ink/10 pb-7 md:grid-cols-12 md:items-end">
+            <div className="md:col-span-7">
+              <p className="font-mono text-[0.64rem] uppercase tracking-label text-ink/42">PHOTOGRAPHY · SELECTED ARCHIVE</p>
+              <h1 className="mt-4 text-4xl font-medium tracking-tight text-ink md:text-6xl">Photography</h1>
+            </div>
+            <p className="max-w-lg text-base leading-relaxed text-ink/55 md:col-span-4 md:col-start-9">A tighter edit from a much larger body of work — landscape, life, people, culture and environmental field documentation.</p>
           </div>
         </Reveal>
       </header>
 
-      <main className="mx-auto mt-16 max-w-[1800px] px-5 md:mt-24 md:px-6">
-        <Reveal><div className="grid gap-x-1 gap-y-16 md:grid-cols-12 md:gap-y-28">
-          <Photo index={0} className="md:col-span-8" />
-          <Photo index={1} className="md:col-span-4 md:mt-28" />
-          <Photo index={2} className="md:col-span-5 md:col-start-2" />
-          <Photo index={3} className="md:col-span-5 md:col-start-7 md:mt-20" />
-          <Photo index={4} className="md:col-span-7" />
-          <Photo index={5} className="md:col-span-5 md:mt-24" />
-          <Photo index={6} className="md:col-span-5 md:col-start-2" />
-          <Photo index={7} className="md:col-span-6 md:col-start-7 md:mt-16" />
-          <Photo index={8} className="md:col-span-7" />
-          <Photo index={9} className="md:col-span-5 md:mt-24" />
-          <Photo index={10} className="md:col-span-5 md:col-start-2" />
-          <Photo index={11} className="md:col-span-6 md:col-start-7 md:mt-20" />
-          <Photo index={12} className="md:col-span-5" />
-          <Photo index={13} className="md:col-span-7 md:mt-20" />
-          <Photo index={14} className="md:col-span-6 md:col-start-4" />
-        </div></Reveal>
-      </main>
-
-      <section className="container-editorial mt-24 md:mt-36">
-        <Reveal className="grid gap-10 border-t border-ink/10 pt-10 md:grid-cols-12">
-          <div className="md:col-span-3"><p className="font-mono text-[0.67rem] uppercase tracking-label text-ink/45">THE CAMERA</p></div>
-          <div className="md:col-span-8"><p className="max-w-4xl text-3xl font-medium leading-tight tracking-tight text-ink md:text-5xl">Photography taught me to look longer.</p><p className="mt-7 max-w-xl text-lg leading-relaxed text-ink/56">The images I return to are rarely about untouched nature. They are about relationship: a person becoming small in a landscape, an animal looking back, weather changing the terms, culture colliding with place.</p></div>
+      <main className="mx-auto max-w-[1900px] px-2 pb-20 md:px-4 md:pb-28">
+        <Reveal>
+          <PhotoGrid photos={photos} />
         </Reveal>
-      </section>
+      </main>
     </div>
   );
 }

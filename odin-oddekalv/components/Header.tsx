@@ -68,7 +68,7 @@ export default function Header() {
               {indexRooms.map((item, index) => (
                 <Link key={item.href} href={item.href} className="group grid grid-cols-[2.5rem_1fr_auto] items-baseline border-b border-ink/10 py-3.5 transition-colors first:border-t hover:text-blue md:py-4">
                   <span className="font-mono text-[0.6rem] text-blue/70">{String(index + 1).padStart(2, "0")}_</span>
-                  <span className="text-2xl font-medium tracking-tight md:text-4xl">{item.label}</span>
+                  <span className="text-2xl font-medium tracking-tight md:col-span-4 md:text-4xl">{item.label}</span>
                   <span className="font-mono text-xs opacity-0 transition-opacity group-hover:opacity-100">↗</span>
                 </Link>
               ))}
@@ -76,10 +76,9 @@ export default function Header() {
           </div>
 
           <div className="mt-auto grid gap-5 border-t border-ink/10 pt-5 font-mono text-[0.62rem] uppercase tracking-label text-ink/38 md:grid-cols-12">
-            <span className="md:col-span-4">Norway · Field / Culture / Systems</span>
-            <a href={site.links.fourplanet} target="_blank" rel="noreferrer" className="hover:text-blue md:col-span-2">4PLANET ↗</a>
-            <a href={site.links.p4nther} target="_blank" rel="noreferrer" className="hover:text-blue md:col-span-2">P4NTHER ↗</a>
-            <a href={site.links.email} className="hover:text-blue md:col-span-4 md:text-right">{site.email}</a>
+            <a href={site.links.fourplanet} target="_blank" rel="noreferrer" className="hover:text-blue md:col-span-3">4PLANET ↗</a>
+            <a href={site.links.p4nther} target="_blank" rel="noreferrer" className="hover:text-blue md:col-span-3">P4NTHER ↗</a>
+            <a href={site.links.email} className="hover:text-blue md:col-span-6 md:text-right">{site.email}</a>
           </div>
         </div>
       </div>
