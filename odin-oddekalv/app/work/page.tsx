@@ -4,7 +4,7 @@ import Reveal from "@/components/Reveal";
 
 export const metadata: Metadata = {
   title: "Work",
-  description: "What Odin Oddekalv is building in response — 4PLANET, P4NTHER and a body of documentary work.",
+  description: "What Odin Oddekalv is building in response — 4PLANET, P4NTHER and a continuing body of photography, writing and field work.",
 };
 
 const work = [
@@ -13,24 +13,24 @@ const work = [
     title: "4PLANET_",
     role: "THE MAIN WORK",
     href: "https://4planet.org",
-    body: "A living-planet intelligence and action system being built to make nature easier to understand, support and act for — connecting species, ecosystems, problems, solutions, actors and action.",
-    proof: "Live systems, prototypes, field partnerships and an expanding body of ecological intelligence.",
+    body: "An attempt to make the living world easier to understand — and useful action easier to find, trust and support. The work connects credible knowledge with places, species, problems, solutions and the people already doing something about them.",
+    proof: "Being built in public through working products, field cases, data integrations and partnerships — not presented here as a finished answer.",
   },
   {
     index: "02",
     title: "P4NTHER_",
     role: "THE CULTURAL LAYER",
     href: "https://p4nther.no",
-    body: "A creative world for ideas that need to move through identity, art direction, storytelling and culture rather than explanation alone.",
-    proof: "Identity, visual systems, creative direction and cultural experiments in development.",
+    body: "A creative world for the part of change that facts cannot carry alone: identity, images, stories, ideas and cultural work that can make a subject felt before it is explained.",
+    proof: "A growing body of visual systems, creative direction and cultural experiments.",
   },
   {
     index: "03",
     title: "ODIN_",
     role: "THE BODY OF WORK",
     href: "/story",
-    body: "Photography, field notes, essays and future films that keep the systems close to lived reality — and make the reasons behind the work legible without turning the person into the subject of everything.",
-    proof: "Field archive, photography, writing and the unfinished story you are inside now.",
+    body: "Photography, field stories, essays and future films. This is where the larger systems are forced back into contact with real places, real lives and the reasons the work exists in the first place.",
+    proof: "The field archive, photographs and writing across this site — unfinished by design because the work is unfinished too.",
   },
 ];
 
@@ -41,7 +41,7 @@ export default function WorkPage() {
         <Reveal>
           <p className="font-mono text-[0.67rem] uppercase tracking-label text-ink/45">WORK · 04</p>
           <h1 className="mt-6 max-w-6xl font-medium tracking-tight text-ink [font-size:clamp(54px,9vw,126px)] [letter-spacing:-0.055em] [line-height:0.88]">THEREFORE<br />I BUILD.</h1>
-          <p className="mt-9 max-w-2xl text-xl leading-relaxed text-ink/58">The story only matters if something real exists on the other side of it.</p>
+          <p className="mt-9 max-w-2xl text-xl leading-relaxed text-ink/58">The question changed from what should stop to what should become easier to understand, trust and choose.</p>
         </Reveal>
       </header>
 
@@ -68,7 +68,7 @@ export default function WorkPage() {
 
       <Reveal className="mx-auto mt-24 max-w-[1800px] bg-ink text-paper md:mt-36">
         <div className="container-editorial flex min-h-[58svh] items-center py-20">
-          <div className="max-w-4xl"><p className="font-mono text-[0.67rem] uppercase tracking-label text-paper/45">THE TEST</p><p className="mt-7 text-4xl font-medium leading-tight tracking-tight md:text-6xl">If the work cannot survive without the story, the story is doing too much.</p><p className="mt-7 max-w-xl text-lg leading-relaxed text-paper/55">ODIN_ should make the reasons legible. 4PLANET has to prove the response.</p></div>
+          <div className="max-w-4xl"><p className="font-mono text-[0.67rem] uppercase tracking-label text-paper/45">THE TEST</p><p className="mt-7 text-4xl font-medium leading-tight tracking-tight md:text-6xl">If the work cannot survive without the story, the story is doing too much.</p><p className="mt-7 max-w-xl text-lg leading-relaxed text-paper/55">This site can explain the reasons. 4PLANET has to prove the response.</p></div>
         </div>
       </Reveal>
     </div>
