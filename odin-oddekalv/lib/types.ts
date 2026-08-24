@@ -9,7 +9,10 @@ export type JournalCategory =
   | "SYSTEMS"
   | "EXPLORATION"
   | "BUILDING"
-  | "FIELD NOTES";
+  | "FIELD NOTES"
+  | "THESIS"
+  | "PEOPLE"
+  | "TRUST";
 
 export interface JournalPost {
   title: string;
