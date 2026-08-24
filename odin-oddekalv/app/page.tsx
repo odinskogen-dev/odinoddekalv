@@ -28,8 +28,7 @@ export default function HomePage() {
     <>
       <section className="container-editorial flex min-h-[78svh] flex-col justify-center py-20 md:min-h-[82svh] md:py-24">
         <Reveal>
-          <Label>ODIN ODDEKALV · NORWAY · FIELD / CULTURE / SYSTEMS</Label>
-          <h1 className="mt-8 font-medium text-ink [font-size:clamp(58px,9vw,132px)] [letter-spacing:-0.055em] [line-height:0.88]">ODIN<br />ODDEKALV<span className="text-blue">_</span></h1>
+          <h1 className="font-medium text-ink [font-size:clamp(58px,9vw,132px)] [letter-spacing:-0.055em] [line-height:0.88]">ODIN<br />ODDEKALV<span className="text-blue">_</span></h1>
           <p className="mt-9 max-w-3xl font-medium tracking-tight text-ink [font-size:clamp(25px,3.4vw,46px)] [letter-spacing:-0.035em] [line-height:1.04]">The living world came first.<br />The work followed.</p>
         </Reveal>
         <Reveal delay={0.08} className="mt-10 grid gap-6 border-t border-ink/10 pt-7 md:grid-cols-12">
@@ -75,7 +74,7 @@ export default function HomePage() {
 
       <section className="mx-auto mt-24 max-w-[1800px] md:mt-32 md:px-6">
         <Reveal>
-          <div className="container-editorial mb-6 flex items-end justify-between gap-6 md:px-0"><div><Label>Selected photographs</Label><p className="mt-3 text-2xl font-medium tracking-tight text-ink md:text-3xl">A strict edit.</p></div><Link href="/photography" className="font-mono text-[0.66rem] uppercase tracking-label text-ink/45 hover:text-blue">View photography →</Link></div>
+          <div className="container-editorial mb-6 flex items-end justify-between gap-6 md:px-0"><div><Label>Selected photographs</Label><p className="mt-3 text-2xl font-medium tracking-tight text-ink md:text-3xl">A few frames from the archive.</p></div><Link href="/photography" className="font-mono text-[0.66rem] uppercase tracking-label text-ink/45 hover:text-blue">View photography →</Link></div>
           <div className="grid gap-1 bg-paper md:grid-cols-12 md:grid-rows-2">
             <figure className="group overflow-hidden bg-stone-100 md:col-span-7 md:row-span-2"><div className="aspect-[4/3] h-full overflow-hidden md:aspect-auto"><Photo src={selected[0].src} alt={`${selected[0].title}, photographed by Odin Oddekalv`} className="transition-transform duration-700 ease-editorial group-hover:scale-[1.015]" /></div></figure>
             <figure className="group overflow-hidden bg-stone-100 md:col-span-5"><div className="aspect-[16/10] overflow-hidden"><Photo src={selected[1].src} alt={`${selected[1].title}, photographed by Odin Oddekalv`} className="transition-transform duration-700 ease-editorial group-hover:scale-[1.015]" /></div></figure>
