@@ -1,4 +1,4 @@
-name: Probe ODIN asset import
+name: Import ODIN final assets
 
 on:
   push:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  probe:
+  import-assets:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
@@ -20,34 +20,76 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Probe Drive access
+      - name: Install image tools
+        run: pip install --disable-pip-version-check pillow
+      - name: Download verified Drive originals
         shell: bash
         run: |
-          set +e
-          pip install --disable-pip-version-check gdown >/tmp/pip.log 2>&1
-          python - <<'PY' >/tmp/gdown.log 2>&1
-          import gdown, os
-          fid='1PcVj2HXAuuswXsJGjAU1sp4FF7rT5MWt'
-          out='/tmp/village-life.jpg'
-          print('result=', gdown.download(id=fid, output=out, quiet=False, fuzzy=True))
-          print('exists=', os.path.exists(out))
-          print('size=', os.path.getsize(out) if os.path.exists(out) else 0)
+          set -euo pipefail
+          rm -rf /tmp/odin-final
+          mkdir -p /tmp/odin-final odin-oddekalv/public/images/odin/gold
+          python - <<'PY'
+          import subprocess, os
+          files = {
+            'volcanic-void': '1LeWiJ60_OkfcrML0kq5ImFcYKhGx4MpT',
+            'village-life': '1PcVj2HXAuuswXsJGjAU1sp4FF7rT5MWt',
+            'we-will-tell': '1aYnGentDYXbPamhdS3NCkS-3Lj-SJl1w',
+            'the-grind': '1oaiGJl5r5DpOVyUGviKPt-MYjZDDY1_R',
+            'not-all-tradition': '1MvR0ton9xSHVAtnoV0lg4DhrfpQgG1GJ',
+            'tears-and-flowers': '1CZWZ5GAtnNYpLZtW8NuhipepTQspUg2V',
+            'end-whaling': '1pyP323iP6feMTbHRVDJvTjqEa5ORInBy',
+            'storming-beach': '1BeG4VgKJU-j5POWne_F_gP1QBCkFmDMR',
+            'walk-the-line': '1Ve6ZfIyeHIR3aA7mk4-RL1jyUVUOr2rA',
+            'unstad-arctic-surf': '1mb-8vRTdGQGE6H_LhECy4jUsaCg9MN_y',
+            'snohette': '14WWls3Bmsz4lmjI6359rCnXATOXuK-zc',
+            'im-hungry': '1XvZAt1kCQMTbTzMzimMGq5WMmLqhZ-gk',
+            'girson-nmg': '1_5x1S7-RP9ia1ONWGPG4zo752qkRNtnv',
+            'napoleon': '124q0uCSI3VkVJsTP_LUdjy3GwzEs8-OD',
+            'samuel': '1jVQnUciTjtEKreO6HRXo5SYgAJZ9XZ4D',
+            'aksel-canggu': '1QpYGaCfs6ZG_PJOJkKVCVvB29BqYhmDu',
+            'seacabin': '1lqoStgjikyQvfPm_QXujqCZbxvQMYXqH',
+            'lofoten-mid-summer': '1wyQoK1ljucLAsehAebH531ZhoD7lt0-4',
+            'lofoten-handshake': '1mgqq1tQVWMuZIl_fTe1kEbUWb7xSqJtx',
+          }
+          for name, fid in files.items():
+              out=f'/tmp/odin-final/{name}.jpg'
+              url=f'https://drive.usercontent.google.com/download?id={fid}&export=download&confirm=t'
+              subprocess.run(['curl','-L','--fail','--silent','--show-error','--retry','3','-o',out,url],check=True)
+              size=os.path.getsize(out)
+              if size < 50000:
+                  raise SystemExit(f'Invalid download for {name}: {size} bytes')
+              print(name, size)
           PY
-          curl -L -sS -D /tmp/curl.headers -o /tmp/curl.bin "https://drive.usercontent.google.com/download?id=1PcVj2HXAuuswXsJGjAU1sp4FF7rT5MWt&export=download&confirm=t"
-          {
-            echo "GDOWN"
-            cat /tmp/gdown.log
-            echo
-            echo "CURL_HEADERS"
-            cat /tmp/curl.headers
-            echo
-            echo "CURL_SIZE=$(wc -c </tmp/curl.bin 2>/dev/null || echo 0)"
-            file /tmp/curl.bin 2>/dev/null || true
-          } > asset-probe.txt
-      - name: Commit diagnostic
+      - name: Create web masters
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f odin-oddekalv/public/images/odin/gold/*.webp odin-oddekalv/public/images/odin/gold/*.svg
+          python - <<'PY'
+          from PIL import Image
+          import os, glob
+          outdir='odin-oddekalv/public/images/odin/gold'
+          for src in glob.glob('/tmp/odin-final/*.jpg'):
+              name=os.path.splitext(os.path.basename(src))[0]
+              im=Image.open(src).convert('RGB')
+              w,h=im.size
+              if w < 900 or h < 600:
+                  raise SystemExit(f'Unexpected dimensions {name}: {im.size}')
+              if max(w,h)>1800:
+                  s=1800/max(w,h)
+                  im=im.resize((round(w*s),round(h*s)),Image.Resampling.LANCZOS)
+              out=os.path.join(outdir,name+'.webp')
+              im.save(out,'WEBP',quality=82,method=6)
+              size=os.path.getsize(out)
+              if size < 10000:
+                  raise SystemExit(f'Unexpected web master size {name}: {size}')
+              print(name, im.size, size)
+          PY
+      - name: Commit final photography masters
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add asset-probe.txt
-          git commit -m "Ops: record Drive asset probe" || exit 0
+          rm -f asset-probe.txt
+          git add -A odin-oddekalv/public/images/odin/gold asset-probe.txt
+          git commit -m "ODIN Gold: install verified photography masters" || exit 0
           git push origin HEAD:build/odin-universe-04-gold
