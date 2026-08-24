@@ -1,0 +1,96 @@
+name: Import ODIN GOLD assets
+
+on:
+  push:
+    branches:
+      - build/odin-universe-04-gold
+    paths:
+      - .github/workflows/import-odin-gold-assets.yml
+
+permissions:
+  contents: write
+
+jobs:
+  import-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: build/odin-universe-04-gold
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install image tools
+        run: python -m pip install --quiet gdown pillow
+      - name: Download curated masters from ODIN Fotobank
+        shell: bash
+        run: |
+          set -euo pipefail
+          raw="/tmp/odin-gold-raw"
+          out="odin-oddekalv/public/images/odin/gold"
+          mkdir -p "$raw" "$out"
+
+          get() {
+            id="$1"
+            name="$2"
+            echo "Fetching $name"
+            gdown --fuzzy "https://drive.google.com/file/d/${id}/view" -O "$raw/${name}.jpg"
+            test -s "$raw/${name}.jpg"
+          }
+
+          get "1Ve6ZfIyeHIR3aA7mk4-RL1jyUVUOr2rA" "walk-the-line"
+          get "1LeWiJ60_OkfcrML0kq5ImFcYKhGx4MpT" "volcanic-void"
+          get "1PcVj2HXAuuswXsJGjAU1sp4FF7rT5MWt" "village-life"
+          get "10uS55RAH8DxXFT9ZJ1c1TZm6wkEQQ6fr" "mr-mowinckel"
+          get "14WWls3Bmsz4lmjI6359rCnXATOXuK-zc" "snohette"
+          get "1XvZAt1kCQMTbTzMzimMGq5WMmLqhZ-gk" "im-hungry"
+          get "1mgqq1tQVWMuZIl_fTe1kEbUWb7xSqJtx" "lofoten-handshake"
+          get "1_5x1S7-RP9ia1ONWGPG4zo752qkRNtnv" "girson-nmg"
+          get "1QpYGaCfs6ZG_PJOJkKVCVvB29BqYhmDu" "aksel-canggu"
+          get "1CZWZ5GAtnNYpLZtW8NuhipepTQspUg2V" "tears-and-flowers-for-the-whales"
+          get "1pyP323iP6feMTbHRVDJvTjqEa5ORInBy" "end-whaling"
+          get "1MvR0ton9xSHVAtnoV0lg4DhrfpQgG1GJ" "not-all-tradition"
+          get "1aYnGentDYXbPamhdS3NCkS-3Lj-SJl1w" "we-will-tell"
+          get "1JwbO5vI1OsWRQpXncFnn5oLkannKACkt" "burning-faroese-sky"
+          get "1O9KFvcTB7mSjcdrOq_pMoDWq8nWsSfLX" "beachboys"
+          get "1mE_U1zJls7Y5UulmzHx8qgj5x4J0Wi8r" "farmed-salmon-chefs"
+          get "1nsg4O8JWWYr-S5Fm3dafxLqT-vYNh1Yu" "cracker"
+          get "1oaiGJl5r5DpOVyUGviKPt-MYjZDDY1_R" "the-grind"
+          get "1BeG4VgKJU-j5POWne_F_gP1QBCkFmDMR" "storming-beach"
+
+      - name: Produce web masters
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageOps
+
+          src = Path('/tmp/odin-gold-raw')
+          dst = Path('odin-oddekalv/public/images/odin/gold')
+          dst.mkdir(parents=True, exist_ok=True)
+
+          for p in sorted(src.glob('*.jpg')):
+              with Image.open(p) as im:
+                  im = ImageOps.exif_transpose(im).convert('RGB')
+                  max_side = 2400
+                  if max(im.size) > max_side:
+                      ratio = max_side / max(im.size)
+                      im = im.resize((round(im.width * ratio), round(im.height * ratio)), Image.Resampling.LANCZOS)
+                  target = dst / f'{p.stem}.webp'
+                  im.save(target, 'WEBP', quality=88, method=6)
+                  print(target, im.size, target.stat().st_size)
+          PY
+      - name: Commit web masters to GOLD branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "odinskogen-dev"
+          git config user.email "odin.skogen@gmail.com"
+          git add odin-oddekalv/public/images/odin/gold/*.webp
+          if git diff --cached --quiet; then
+            echo "No new image changes."
+            exit 0
+          fi
+          git commit -m "Add curated ODIN GOLD photography masters"
+          git push origin HEAD:build/odin-universe-04-gold
