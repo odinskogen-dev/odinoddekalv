@@ -1,0 +1,44 @@
+name: Patch ODIN Next 14
+
+on:
+  push:
+    branches:
+      - build/odin-universe-04-gold
+    paths:
+      - .github/workflows/patch-odin-next14.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: odin-oddekalv
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: build/odin-universe-04-gold
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: odin-oddekalv/package-lock.json
+      - name: Upgrade Next.js 14 to patched release
+        run: |
+          npm install next@14.2.35 --save-exact
+          npm install eslint-config-next@14.2.35 --save-dev --save-exact
+      - name: Build patched production app
+        run: npm run build
+      - name: Production dependency audit
+        run: npm audit --omit=dev --audit-level=high
+      - name: Commit deterministic dependency patch
+        working-directory: .
+        run: |
+          git config user.name "odinskogen-dev"
+          git config user.email "odin.skogen@gmail.com"
+          git add odin-oddekalv/package.json odin-oddekalv/package-lock.json
+          git commit -m "ODIN Gold: patch Next.js to 14.2.35"
+          git push origin HEAD:build/odin-universe-04-gold
