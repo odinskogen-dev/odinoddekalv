@@ -1,16 +1,21 @@
 "use client";
 
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import Media from "@/components/Media";
 import { cx } from "@/lib/utils";
-import type { PhotoItem, PhotoCategory } from "@/lib/types";
+import type { PhotoCategory, PhotoItem } from "@/lib/types";
 
-const aspect: Record<NonNullable<PhotoItem["orientation"]>, string> = {
-  portrait: "aspect-[4/5]",
-  landscape: "aspect-[3/2]",
-  square: "aspect-square",
-};
+const preferredOrder: ("ALL" | PhotoCategory)[] = [
+  "ALL",
+  "NATURE",
+  "PEOPLE",
+  "WILDLIFE",
+  "CULTURE",
+  "SEA SHEPHERD",
+  "PLACES",
+  "FIELD NOTES",
+  "EXPEDITIONS",
+];
 
 export default function PhotoGrid({
   photos,
@@ -20,35 +25,40 @@ export default function PhotoGrid({
   showFilters?: boolean;
 }) {
   const categories = useMemo(() => {
-    const set = new Set<PhotoCategory>(photos.map((p) => p.category));
-    return ["ALL", ...Array.from(set)] as ("ALL" | PhotoCategory)[];
+    const present = new Set<PhotoCategory>(photos.map((photo) => photo.category));
+    return preferredOrder.filter((category) => category === "ALL" || present.has(category));
   }, [photos]);
 
   const [active, setActive] = useState<"ALL" | PhotoCategory>("ALL");
   const [open, setOpen] = useState<number | null>(null);
 
   const filtered = useMemo(
-    () => (active === "ALL" ? photos : photos.filter((p) => p.category === active)),
+    () => (active === "ALL" ? photos : photos.filter((photo) => photo.category === active)),
     [active, photos]
   );
 
+  useEffect(() => {
+    setOpen(null);
+  }, [active]);
+
   const close = useCallback(() => setOpen(null), []);
   const next = useCallback(
-    () => setOpen((i) => (i === null ? i : (i + 1) % filtered.length)),
+    () => setOpen((index) => (index === null ? index : (index + 1) % filtered.length)),
     [filtered.length]
   );
   const prev = useCallback(
-    () => setOpen((i) => (i === null ? i : (i - 1 + filtered.length) % filtered.length)),
+    () => setOpen((index) => (index === null ? index : (index - 1 + filtered.length) % filtered.length)),
     [filtered.length]
   );
 
   useEffect(() => {
     if (open === null) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
-      if (e.key === "ArrowRight") next();
-      if (e.key === "ArrowLeft") prev();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") close();
+      if (event.key === "ArrowRight") next();
+      if (event.key === "ArrowLeft") prev();
     };
+
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
     return () => {
@@ -62,129 +72,99 @@ export default function PhotoGrid({
   return (
     <div>
       {showFilters && (
-        <div className="mb-10 flex flex-wrap gap-x-5 gap-y-2 border-b border-ink/10 pb-4">
-          {categories.map((c) => (
+        <div className="mb-7 flex flex-wrap gap-x-5 gap-y-3 border-b border-ink/10 pb-4 md:mb-10">
+          {categories.map((category) => (
             <button
-              key={c}
+              key={category}
               type="button"
-              onClick={() => setActive(c)}
+              onClick={() => setActive(category)}
               className={cx(
-                "font-mono text-xs uppercase tracking-label transition-colors hover:text-blue",
-                active === c ? "text-blue" : "text-ink/45"
+                "font-mono text-[0.62rem] uppercase tracking-label transition-colors hover:text-blue",
+                active === category ? "text-blue" : "text-ink/42"
               )}
             >
-              {c}
+              {category}
             </button>
           ))}
         </div>
       )}
 
-      {/* Masonry-ish columns preserve each photo's orientation */}
-      <div className="columns-1 gap-5 sm:columns-2 lg:columns-3 [&>*]:mb-5">
-        {filtered.map((p, i) => (
+      <div className="columns-1 gap-1 sm:columns-2 lg:columns-3 xl:columns-4 [&>*]:mb-1">
+        {filtered.map((photo, index) => (
           <button
-            key={p.id}
+            key={photo.id}
             type="button"
-            onClick={() => setOpen(i)}
-            className="group block w-full break-inside-avoid text-left"
+            onClick={() => setOpen(index)}
+            className="group relative block w-full break-inside-avoid overflow-hidden bg-stone-100 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
+            aria-label={`Open ${photo.title}`}
           >
-            <Media
-              src={p.image}
-              alt={p.title}
-              className={cx("w-full", aspect[p.orientation ?? "landscape"])}
-              imgClassName="group-hover:scale-[1.03]"
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={photo.image}
+              alt={`${photo.title}, photographed by Odin Oddekalv`}
+              loading={index < 6 ? "eager" : "lazy"}
+              className="block h-auto w-full transition duration-500 ease-editorial group-hover:brightness-[0.94]"
             />
-            <div className="mt-3 flex items-baseline justify-between gap-3">
-              <p className="text-sm font-medium tracking-tight text-ink transition-colors group-hover:text-blue">
-                {p.title}
-              </p>
-              <span className="shrink-0 font-mono text-[0.65rem] uppercase tracking-label text-ink/40">
-                {p.location} · {p.year}
-              </span>
-            </div>
+            <span className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-full bg-gradient-to-t from-black/65 via-black/20 to-transparent px-4 pb-3 pt-12 text-left text-paper transition-transform duration-300 ease-editorial group-hover:translate-y-0 group-focus-visible:translate-y-0">
+              <span className="block text-sm font-medium tracking-tight">{photo.title}</span>
+              <span className="mt-1 block font-mono text-[0.58rem] uppercase tracking-label text-paper/65">{photo.location}</span>
+            </span>
           </button>
         ))}
       </div>
 
-      {/* Lightbox */}
       <AnimatePresence>
         {current && (
           <motion.div
-            className="fixed inset-0 z-[60] flex flex-col bg-paper/98 backdrop-blur-sm"
+            className="fixed inset-0 z-[80] bg-paper"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            onClick={close}
+            transition={{ duration: 0.2 }}
             role="dialog"
             aria-modal="true"
+            aria-label={`${current.title} lightbox`}
           >
-            <div className="container-editorial flex h-14 shrink-0 items-center justify-between">
-              <span className="font-mono text-xs uppercase tracking-label text-blue">
-                {current.category}
-              </span>
-              <button
-                type="button"
-                onClick={close}
-                className="font-mono text-xs uppercase tracking-label text-ink hover:text-blue"
-                aria-label="Close"
-              >
-                Close ✕
-              </button>
-            </div>
-
-            <div
-              className="flex flex-1 items-center justify-center px-6 pb-4"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <motion.figure
-                key={current.id}
-                initial={{ opacity: 0, scale: 0.99 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="flex max-h-full w-full max-w-4xl flex-col"
-              >
-                <div className="min-h-0 flex-1">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={current.image}
-                    alt={current.title}
-                    className="mx-auto max-h-[68vh] w-auto border border-ink/10 object-contain"
-                  />
+            <div className="flex h-full flex-col">
+              <div className="flex h-16 shrink-0 items-center justify-between border-b border-ink/10 px-5 md:h-20 md:px-8">
+                <span className="font-mono text-[0.62rem] uppercase tracking-label text-ink/42">
+                  {String((open ?? 0) + 1).padStart(2, "0")} / {String(filtered.length).padStart(2, "0")}
+                </span>
+                <div className="flex items-center gap-5 md:gap-7">
+                  <button type="button" onClick={prev} className="font-mono text-xs text-ink/55 transition-colors hover:text-blue" aria-label="Previous photograph">←</button>
+                  <button type="button" onClick={next} className="font-mono text-xs text-ink/55 transition-colors hover:text-blue" aria-label="Next photograph">→</button>
+                  <button type="button" onClick={close} className="font-mono text-xs uppercase tracking-label text-ink transition-colors hover:text-blue" aria-label="Close photograph">Close ×</button>
                 </div>
-                <figcaption className="mx-auto mt-5 max-w-2xl text-center">
-                  <p className="text-lg font-medium tracking-tight text-ink">
-                    {current.title}
-                  </p>
-                  <p className="mt-1 font-mono text-xs uppercase tracking-label text-ink/45">
-                    {current.location} · {current.year}
-                  </p>
-                  <p className="mt-3 leading-relaxed text-ink/65">{current.caption}</p>
-                </figcaption>
-              </motion.figure>
-            </div>
+              </div>
 
-            <div
-              className="container-editorial flex h-14 shrink-0 items-center justify-between"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                type="button"
-                onClick={prev}
-                className="font-mono text-xs uppercase tracking-label text-ink/60 hover:text-blue"
-              >
-                ← Prev
-              </button>
-              <span className="font-mono text-[0.7rem] uppercase tracking-label text-ink/40">
-                {(open ?? 0) + 1} / {filtered.length}
-              </span>
-              <button
-                type="button"
-                onClick={next}
-                className="font-mono text-xs uppercase tracking-label text-ink/60 hover:text-blue"
-              >
-                Next →
-              </button>
+              <div className="min-h-0 flex-1 overflow-auto px-4 py-4 md:px-8 md:py-7" onClick={close}>
+                <motion.figure
+                  key={current.id}
+                  initial={{ opacity: 0, scale: 0.995 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+                  className="mx-auto flex min-h-full max-w-[1500px] flex-col items-center justify-center"
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <div className="flex w-full items-center justify-center bg-white p-3 shadow-[0_18px_60px_rgba(0,0,0,0.08)] md:p-5">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={current.image}
+                      alt={`${current.title}, photographed by Odin Oddekalv`}
+                      className="max-h-[72vh] max-w-full object-contain"
+                    />
+                  </div>
+                  <figcaption className="mt-5 grid w-full max-w-3xl gap-2 border-t border-ink/10 pt-4 md:grid-cols-[1fr_auto] md:items-start">
+                    <div>
+                      <p className="text-base font-medium tracking-tight text-ink">{current.title}</p>
+                      {current.caption && <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink/55">{current.caption}</p>}
+                    </div>
+                    <p className="font-mono text-[0.6rem] uppercase tracking-label text-ink/40 md:text-right">
+                      {current.location}{current.year ? ` · ${current.year}` : ""}
+                    </p>
+                  </figcaption>
+                </motion.figure>
+              </div>
             </div>
           </motion.div>
         )}
