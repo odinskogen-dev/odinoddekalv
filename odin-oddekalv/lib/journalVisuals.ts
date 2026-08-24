@@ -1,10 +1,9 @@
 export const journalVisuals: Record<string, string> = {
-  "why-i-am-searching": "/images/odin/faroe-portrait-02.jpg",
-  "live-well-on-earth": "/images/odin/arctic-white-angel.jpg",
-  "not-a-backdrop": "/images/odin/mulafossur.jpg",
-  "easier-to-understand": "/images/odin/hope-4planet.jpg",
-  "field-note-limits": "/images/odin/long-way-home.jpg",
-  "building-4planet-in-public": "/images/odin/the-future.jpg",
+  "future-worth-choosing": "/images/odin/the-future.jpg",
+  "people-are-infrastructure": "/images/odin/hope-4planet.jpg",
+  "honesty-is-infrastructure": "/images/odin/mulafossur.jpg",
+  "build-one-good-model": "/images/odin/long-way-home.jpg",
+  "not-a-backdrop": "/images/odin/arctic-white-angel.jpg",
 };
 
 export function getJournalVisual(slug: string, fallback: string) {
