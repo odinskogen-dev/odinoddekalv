@@ -55,7 +55,9 @@ export type PhotoCategory =
   | "PEOPLE"
   | "PLACES"
   | "EXPEDITIONS"
-  | "FIELD NOTES";
+  | "FIELD NOTES"
+  | "CULTURE"
+  | "SEA SHEPHERD";
 
 export interface PhotoItem {
   id: string;
@@ -65,7 +67,7 @@ export interface PhotoItem {
   category: PhotoCategory;
   caption: string;
   image: string;
-  /** Aspect orientation, drives the masonry rhythm. */
+  /** Aspect orientation, retained for future editorial layouts. */
   orientation?: "portrait" | "landscape" | "square";
 }
 
