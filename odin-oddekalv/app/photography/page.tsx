@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import PhotoGrid from "@/components/PhotoGrid";
 import type { PhotoItem } from "@/lib/types";
@@ -45,7 +46,13 @@ export default function PhotographyPage() {
               <p className="font-mono text-[0.64rem] uppercase tracking-label text-ink/42">PHOTOGRAPHY · SELECTED ARCHIVE</p>
               <h1 className="mt-4 text-4xl font-medium tracking-tight text-ink md:text-6xl">Photography</h1>
             </div>
-            <p className="max-w-lg text-base leading-relaxed text-ink/55 md:col-span-4 md:col-start-9">A tighter edit from a much larger body of work — landscape, life, people, culture and environmental field documentation.</p>
+            <div className="max-w-lg md:col-span-4 md:col-start-9">
+              <p className="text-base leading-relaxed text-ink/55">A tighter edit from a much larger body of work — landscape, life, people, culture and environmental field documentation.</p>
+              <Link href="/prints" className="group mt-5 inline-flex items-center gap-2 font-mono text-[0.64rem] uppercase tracking-label text-ink transition-colors hover:text-blue">
+                <span className="link-underline">Selected photographs available as prints</span>
+                <span className="transition-transform duration-300 ease-editorial group-hover:translate-x-1">→</span>
+              </Link>
+            </div>
           </div>
         </Reveal>
       </header>
