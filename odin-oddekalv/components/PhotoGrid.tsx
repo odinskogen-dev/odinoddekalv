@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { site } from "@/content/site";
 import { cx } from "@/lib/utils";
 import type { PhotoCategory, PhotoItem } from "@/lib/types";
 
@@ -68,6 +69,7 @@ export default function PhotoGrid({
   }, [open, close, next, prev]);
 
   const current = open !== null ? filtered[open] : null;
+  const metaFor = (photo: PhotoItem) => photo.location || photo.category;
 
   return (
     <div>
@@ -107,7 +109,7 @@ export default function PhotoGrid({
             />
             <span className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-full bg-gradient-to-t from-black/65 via-black/20 to-transparent px-4 pb-3 pt-12 text-left text-paper transition-transform duration-300 ease-editorial group-hover:translate-y-0 group-focus-visible:translate-y-0">
               <span className="block text-sm font-medium tracking-tight">{photo.title}</span>
-              <span className="mt-1 block font-mono text-[0.58rem] uppercase tracking-label text-paper/65">{photo.location}</span>
+              <span className="mt-1 block font-mono text-[0.58rem] uppercase tracking-label text-paper/65">{metaFor(photo)}</span>
             </span>
           </button>
         ))}
@@ -127,10 +129,12 @@ export default function PhotoGrid({
           >
             <div className="flex h-full flex-col">
               <div className="flex h-16 shrink-0 items-center justify-between border-b border-ink/10 px-5 md:h-20 md:px-8">
-                <span className="font-mono text-[0.62rem] uppercase tracking-label text-ink/42">
-                  {String((open ?? 0) + 1).padStart(2, "0")} / {String(filtered.length).padStart(2, "0")}
-                </span>
+                <div className="flex items-baseline gap-4">
+                  <span className="text-[0.82rem] font-medium tracking-[-0.02em] text-ink">{site.wordmark}</span>
+                  <span className="hidden font-mono text-[0.58rem] uppercase tracking-label text-ink/30 sm:inline">PHOTOGRAPHY</span>
+                </div>
                 <div className="flex items-center gap-5 md:gap-7">
+                  <span className="font-mono text-[0.58rem] uppercase tracking-label text-ink/32">{String((open ?? 0) + 1).padStart(2, "0")} / {String(filtered.length).padStart(2, "0")}</span>
                   <button type="button" onClick={prev} className="font-mono text-xs text-ink/55 transition-colors hover:text-blue" aria-label="Previous photograph">←</button>
                   <button type="button" onClick={next} className="font-mono text-xs text-ink/55 transition-colors hover:text-blue" aria-label="Next photograph">→</button>
                   <button type="button" onClick={close} className="font-mono text-xs uppercase tracking-label text-ink transition-colors hover:text-blue" aria-label="Close photograph">Close ×</button>
@@ -160,7 +164,7 @@ export default function PhotoGrid({
                       {current.caption && <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink/55">{current.caption}</p>}
                     </div>
                     <p className="font-mono text-[0.6rem] uppercase tracking-label text-ink/40 md:text-right">
-                      {current.location}{current.year ? ` · ${current.year}` : ""}
+                      {metaFor(current)}{current.year ? ` · ${current.year}` : ""}
                     </p>
                   </figcaption>
                 </motion.figure>
