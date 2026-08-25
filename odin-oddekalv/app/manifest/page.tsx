@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import TypeLabel from "@/components/TypeLabel";
+import { site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Everything I Love Is Alive",
@@ -61,8 +62,8 @@ export default function ManifestPage() {
 
       <section className="container-editorial mt-20 md:mt-28">
         <Reveal className="max-w-reading border-t border-ink/10 pt-8 md:ml-[25%]">
-          <img src="/images/odin/odin-signature-blue.webp" alt="Odin" className="h-auto w-[8.5rem]" />
-          <p className="mt-3 font-mono text-[0.58rem] uppercase tracking-label text-ink/35">Odin Oddekalv · Norway</p>
+          <p className="text-lg font-medium tracking-[-0.025em] text-ink">{site.wordmark}</p>
+          <p className="mt-2 font-mono text-[0.58rem] uppercase tracking-label text-ink/35">Norway · For all that lives.</p>
         </Reveal>
       </section>
     </div>
