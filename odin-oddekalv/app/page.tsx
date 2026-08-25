@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
+import PrintShowcase from "@/components/PrintShowcase";
 
 function Label({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
   return <p className={`font-mono text-[0.68rem] uppercase tracking-label ${light ? "text-paper/45" : "text-ink/45"}`}>{children}</p>;
@@ -14,13 +15,6 @@ const rooms = [
   ["02", "Field", "Places, encounters and what the world changes in the work.", "/field"],
   ["03", "Work", "What I am building in response.", "/work"],
   ["04", "Notes", "Essays, observations and unfinished thinking.", "/journal"],
-];
-
-const selected = [
-  { src: "/images/odin/mulafossur.jpg", title: "Múlafossur", note: "Faroe Islands" },
-  { src: "/images/odin/arctic-white-angel.jpg", title: "Arctic White Angel", note: "Living" },
-  { src: "/images/odin/long-way-home.jpg", title: "The Long Way Home", note: "Passage" },
-  { src: "/images/odin/the-future.jpg", title: "The Future", note: "Action" },
 ];
 
 export default function HomePage() {
@@ -68,24 +62,15 @@ export default function HomePage() {
         <Reveal>
           <div className="flex items-end justify-between gap-6 border-b border-ink/10 pb-5"><div><Label>Explore</Label><h2 className="mt-3 text-4xl font-medium tracking-tight text-ink md:text-5xl">Go deeper.</h2></div><p className="hidden max-w-xs text-sm leading-relaxed text-ink/45 md:block">The front door stays quiet. Depth lives behind it.</p></div>
           <div>{rooms.map(([number, name, description, href]) => <Link key={href} href={href} className="group grid gap-3 border-b border-ink/10 py-6 transition-colors hover:text-blue md:grid-cols-12 md:items-baseline md:py-7"><span className="font-mono text-[0.65rem] text-blue md:col-span-1">{number}_</span><span className="text-3xl font-medium tracking-tight md:col-span-4 md:text-4xl">{name}</span><span className="max-w-lg text-sm leading-relaxed text-ink/52 transition-colors group-hover:text-ink/70 md:col-span-5">{description}</span><span className="hidden justify-self-end font-mono text-sm md:col-span-2 md:block">↗</span></Link>)}</div>
-          <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[0.66rem] uppercase tracking-label text-ink/45"><Link href="/photography" className="hover:text-blue">Photography</Link><Link href="/prints" className="hover:text-blue">Prints</Link><Link href="/archive" className="hover:text-blue">Archive</Link><Link href="/press" className="hover:text-blue">Press / bio</Link></div>
+          <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[0.66rem] uppercase tracking-label text-ink/45"><Link href="/photography" className="hover:text-blue">Photography</Link><Link href="/prints" className="text-blue hover:text-ink">Prints</Link><Link href="/archive" className="hover:text-blue">Archive</Link><Link href="/press" className="hover:text-blue">Press / bio</Link></div>
         </Reveal>
       </section>
 
-      <section className="mx-auto mt-24 max-w-[1800px] md:mt-32 md:px-6">
-        <Reveal>
-          <div className="container-editorial mb-6 flex flex-wrap items-end justify-between gap-6 md:px-0"><div><Label>Selected photographs</Label><p className="mt-3 text-2xl font-medium tracking-tight text-ink md:text-3xl">A few frames from the archive.</p></div><div className="flex gap-5 font-mono text-[0.66rem] uppercase tracking-label text-ink/45"><Link href="/photography" className="hover:text-blue">View photography →</Link><Link href="/prints" className="text-blue hover:text-ink">Buy prints ↗</Link></div></div>
-          <div className="grid gap-1 bg-paper md:grid-cols-12 md:grid-rows-2">
-            <figure className="group overflow-hidden bg-stone-100 md:col-span-7 md:row-span-2"><div className="aspect-[4/3] h-full overflow-hidden md:aspect-auto"><Photo src={selected[0].src} alt={`${selected[0].title}, photographed by Odin Oddekalv`} className="transition-transform duration-700 ease-editorial group-hover:scale-[1.015]" /></div></figure>
-            <figure className="group overflow-hidden bg-stone-100 md:col-span-5"><div className="aspect-[16/10] overflow-hidden"><Photo src={selected[1].src} alt={`${selected[1].title}, photographed by Odin Oddekalv`} className="transition-transform duration-700 ease-editorial group-hover:scale-[1.015]" /></div></figure>
-            <div className="grid gap-1 md:col-span-5 md:grid-cols-2">
-              {selected.slice(2).map((photo) => <figure key={photo.src} className="group overflow-hidden bg-stone-100"><div className="aspect-square overflow-hidden"><Photo src={photo.src} alt={`${photo.title}, photographed by Odin Oddekalv`} className="transition-transform duration-700 ease-editorial group-hover:scale-[1.015]" /></div></figure>)}
-            </div>
-          </div>
-        </Reveal>
-      </section>
+      <Reveal>
+        <PrintShowcase />
+      </Reveal>
 
-      <section className="container-editorial mt-24 pb-8 md:mt-32 md:pb-16">
+      <section className="container-editorial mt-24 pb-8 md:mt-36 md:pb-16">
         <Reveal className="grid gap-10 border-t border-ink/10 pt-10 md:grid-cols-12">
           <div className="md:col-span-3"><Label>Origin text</Label></div>
           <div className="md:col-span-9"><h2 className="font-medium tracking-tight text-ink [font-size:clamp(42px,6vw,82px)] [letter-spacing:-0.05em] [line-height:0.92]">ALT JEG ELSKER LEVER.</h2><p className="mt-4 text-xl tracking-tight text-ink/55">Everything I Love Is Alive.</p><div className="mt-7 flex flex-wrap gap-x-8 gap-y-4 font-mono text-xs uppercase tracking-label"><Link href="/manifest" className="link-underline">Read the origin text</Link><Link href="/work" className="link-underline">See what I build</Link></div></div>
