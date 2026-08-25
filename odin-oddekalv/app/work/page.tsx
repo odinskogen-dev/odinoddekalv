@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Reveal from "@/components/Reveal";
 
 export const metadata: Metadata = {
@@ -12,8 +13,8 @@ const work = [
     title: "4PLANET_",
     role: "THE MAIN WORK",
     href: "https://4planet.org",
-    body: "I am building 4PLANET to make the living world easier to understand — and useful action easier to find, trust and support. It connects places, species, problems, solutions and the people already doing something about them.",
-    proof: "Live products, field cases, data integrations and partnerships are being built and tested in public.",
+    body: "4PLANET is my attempt to make ecological reality easier to understand before important choices are locked in — and to make useful action easier to find, trust, support and learn from.",
+    proof: "The work is being developed through real places, species, decisions, field partners and public prototypes rather than as a theory in isolation.",
   },
   {
     index: "02",
@@ -24,6 +25,20 @@ const work = [
     proof: "Visual systems, creative direction and cultural experiments in development.",
   },
 ];
+
+const principles = [
+  ["01", "SEE REALITY", "Start with the strongest available evidence. Keep the source, uncertainty and what is still unknown visible."],
+  ["02", "IMPROVE THE DECISION", "Make consequences and trade-offs easier to understand while the choice that creates them can still be changed."],
+  ["03", "USE WHAT ALREADY WORKS", "Do not replace good science, field knowledge or solutions for the sake of owning them. Connect the strongest existing work."],
+  ["04", "LEARN FROM THE RESULT", "Action is not proof. What happened afterwards should improve the next decision."],
+] as const;
+
+const notes = [
+  ["Before the Decision Is Made", "/journal/before-the-decision-is-made"],
+  ["Truth by Design", "/journal/truth-by-design"],
+  ["A Future Worth Choosing", "/journal/future-worth-choosing"],
+  ["Build One Good Model", "/journal/build-one-good-model"],
+] as const;
 
 export default function WorkPage() {
   return (
@@ -56,6 +71,45 @@ export default function WorkPage() {
           ))}
         </div>
       </main>
+
+      <section className="container-editorial mt-24 md:mt-36">
+        <Reveal className="grid gap-10 border-t border-ink/10 pt-10 md:grid-cols-12">
+          <div className="md:col-span-3">
+            <p className="font-mono text-[0.67rem] uppercase tracking-label text-ink/45">4PLANET · WHY</p>
+          </div>
+          <div className="md:col-span-8 md:col-start-5">
+            <h2 className="max-w-5xl text-4xl font-medium leading-[0.98] tracking-tight text-ink md:text-6xl">The damage is often easiest to see when the decision is already history.</h2>
+            <div className="mt-9 grid gap-8 md:grid-cols-2">
+              <p className="text-lg leading-relaxed text-ink/62">We already have extraordinary science, field knowledge, technology and people working on ecological problems. But what is known, what can be done and who can do it are still often separated from the moment a real decision is made.</p>
+              <p className="text-lg leading-relaxed text-ink/62">I am not trying to build an organisation that owns every answer. I am trying to build better connective tissue between reality, choices, action and learning — an ecosystem for the ecosystem.</p>
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal className="mt-14 border-t border-ink/10 md:mt-20">
+          {principles.map(([number, title, body]) => (
+            <div key={number} className="grid gap-4 border-b border-ink/10 py-7 md:grid-cols-12 md:items-baseline md:py-8">
+              <span className="font-mono text-[0.62rem] text-blue md:col-span-1">{number}_</span>
+              <h3 className="font-mono text-[0.66rem] uppercase tracking-label text-ink md:col-span-3">{title}</h3>
+              <p className="max-w-3xl text-base leading-relaxed text-ink/58 md:col-span-6 md:col-start-6">{body}</p>
+            </div>
+          ))}
+        </Reveal>
+
+        <Reveal className="mt-12 grid gap-8 md:grid-cols-12 md:mt-16">
+          <div className="md:col-span-3">
+            <p className="font-mono text-[0.64rem] uppercase tracking-label text-ink/42">THE THINKING BEHIND IT</p>
+          </div>
+          <div className="md:col-span-7 md:col-start-5">
+            {notes.map(([title, href]) => (
+              <Link key={href} href={href} className="group flex items-baseline justify-between gap-6 border-b border-ink/10 py-4 first:border-t">
+                <span className="text-xl font-medium tracking-tight text-ink transition-colors group-hover:text-blue md:text-2xl">{title}</span>
+                <span className="font-mono text-xs text-ink/35 transition-transform group-hover:translate-x-1">→</span>
+              </Link>
+            ))}
+          </div>
+        </Reveal>
+      </section>
 
       <section className="container-editorial mt-24 md:mt-36">
         <Reveal className="grid gap-10 border-t border-ink/10 pt-10 md:grid-cols-12">
