@@ -12,7 +12,7 @@ const focus = [
   "Turning research and experience into clearer ways to help",
 ];
 
-const updated = "Current · Norway / the field";
+const updated = "Updated · August 2026";
 
 export default function NowPage() {
   return (
