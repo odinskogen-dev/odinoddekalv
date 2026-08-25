@@ -46,13 +46,25 @@ export default function Header() {
             ))}
           </nav>
 
-          <button type="button" onClick={() => setOpen((value) => !value)} className="group flex items-center gap-3 justify-self-end py-3" aria-expanded={open} aria-label={open ? "Close index" : "Open index"}>
-            <span className="font-mono text-[0.63rem] uppercase tracking-label text-ink/48 transition-colors group-hover:text-blue">{open ? "Close" : "Index"}</span>
-            <span className="relative block h-3 w-5">
-              <span className={cx("absolute left-0 top-[2px] h-px w-full bg-ink transition-transform duration-300 ease-editorial", open && "translate-y-[4px] rotate-45")} />
-              <span className={cx("absolute bottom-[2px] left-0 h-px w-full bg-ink transition-transform duration-300 ease-editorial", open && "-translate-y-[4px] -rotate-45")} />
-            </span>
-          </button>
+          <div className="flex items-center gap-4 justify-self-end md:gap-5">
+            <Link
+              href="/prints"
+              className={cx(
+                "font-mono text-[0.63rem] uppercase tracking-label transition-colors hover:text-blue",
+                active("/prints") ? "text-blue" : "text-ink/48",
+              )}
+            >
+              Prints
+            </Link>
+
+            <button type="button" onClick={() => setOpen((value) => !value)} className="group flex items-center gap-3 py-3" aria-expanded={open} aria-label={open ? "Close index" : "Open index"}>
+              <span className="font-mono text-[0.63rem] uppercase tracking-label text-ink/48 transition-colors group-hover:text-blue">{open ? "Close" : "Index"}</span>
+              <span className="relative block h-3 w-5">
+                <span className={cx("absolute left-0 top-[2px] h-px w-full bg-ink transition-transform duration-300 ease-editorial", open && "translate-y-[4px] rotate-45")} />
+                <span className={cx("absolute bottom-[2px] left-0 h-px w-full bg-ink transition-transform duration-300 ease-editorial", open && "-translate-y-[4px] -rotate-45")} />
+              </span>
+            </button>
+          </div>
         </div>
       </header>
 
