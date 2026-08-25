@@ -5,32 +5,33 @@ import { useEffect, useRef, useState } from "react";
 import { site } from "@/content/site";
 
 const store = "https://odin-oddekalv-photography-shop.fourthwall.com";
+const checkout = (variantId: string) => `${store}/cart/checkout?products=${variantId}:1&cart_origin=oddekalv-gallery&utm_source=oddekalv.org&utm_medium=gallery&utm_campaign=prints`;
 
 const prints = [
   {
     title: "Summit at Sunset",
     image: "https://cdn.fourthwall.com/customizations/sh_75dbb360-ca9e-4bb9-a601-0c9684bbe723/dee5444a-c377-4a6f-b69b-3eb9c46371e0.jpeg",
-    href: `${store}/products/summit-at-sunset-fine-art-print`,
+    href: checkout("2441c0f2-e16e-47fe-817d-f43ab7107f17"),
   },
   {
     title: "Purple Shore",
     image: "https://cdn.fourthwall.com/customizations/sh_75dbb360-ca9e-4bb9-a601-0c9684bbe723/f3b06f85-6afc-464f-8816-8cf330cb05ca.jpeg",
-    href: `${store}/products/purple-shore-fine-art-print`,
+    href: checkout("a6765840-906f-4fee-8448-87dc34986d98"),
   },
   {
     title: "Bergen Reflections",
     image: "https://cdn.fourthwall.com/customizations/sh_75dbb360-ca9e-4bb9-a601-0c9684bbe723/47488d3c-5c44-47a7-81b1-e8ed8f0d2d35.jpeg",
-    href: `${store}/products/bergen-reflections-fine-art-print`,
+    href: checkout("f8a34771-3f9b-4446-9b32-e39606672661"),
   },
   {
     title: "Bergen Blue Hour",
     image: "https://cdn.fourthwall.com/customizations/sh_75dbb360-ca9e-4bb9-a601-0c9684bbe723/169bc614-daea-41ce-99ee-21e5d02d2c22.jpeg",
-    href: `${store}/products/bergen-blue-hour-fine-art-print`,
+    href: checkout("90e2448d-2dd4-48e6-8255-23b29c892adb"),
   },
   {
     title: "Northern Harbour",
     image: "https://cdn.fourthwall.com/customizations/sh_75dbb360-ca9e-4bb9-a601-0c9684bbe723/a093c3e4-a52a-4929-8090-f82d555f9e29.jpeg",
-    href: `${store}/products/northern-harbour-fine-art-print`,
+    href: checkout("5884432f-10bf-4d73-9f9f-cd61b4026a4a"),
   },
 ] as const;
 
@@ -103,7 +104,7 @@ function Gallery({ variant }: { variant: GalleryVariant }) {
 
           <div className="grid gap-x-1 gap-y-12 md:grid-cols-12 md:gap-y-20">
             {prints.map((print, index) => (
-              <figure key={print.href} className={layout[index]}>
+              <figure key={print.title} className={layout[index]}>
                 <button type="button" onClick={() => setActiveIndex(index)} className="group block w-full cursor-zoom-in text-left" aria-label={`View ${print.title} fullscreen`}>
                   <div className="overflow-hidden bg-stone-100">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -129,7 +130,7 @@ function Gallery({ variant }: { variant: GalleryVariant }) {
       ) : (
         <div className="space-y-20 md:space-y-32">
           {prints.map((print, index) => (
-            <article key={print.href} className="group">
+            <article key={print.title} className="group">
               <button type="button" onClick={() => setActiveIndex(index)} className="block w-full cursor-zoom-in text-left" aria-label={`View ${print.title} fullscreen`}>
                 <div className="mx-auto w-full max-w-[2000px] overflow-hidden bg-ink">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -190,10 +191,10 @@ function Gallery({ variant }: { variant: GalleryVariant }) {
                   <p className="font-mono text-[0.55rem] uppercase tracking-label text-black/32 md:col-span-5 md:text-right">Swipe or use arrows to browse</p>
                 </div>
 
-                <a href={active.href} target="_blank" rel="noreferrer" className="group flex w-full items-center justify-between border-y border-black/10 py-3.5 transition-colors hover:border-black/25 md:py-4" aria-label={`Buy ${active.title} print`}>
+                <a href={active.href} className="group flex w-full items-center justify-between border-y border-black/10 py-3.5 transition-colors hover:border-black/25 md:py-4" aria-label={`Buy ${active.title} print`}>
                   <span className="font-mono text-[0.62rem] uppercase tracking-label text-black/52 transition-colors group-hover:text-blue">Buy print</span>
                   <span className="flex items-center gap-6 font-mono text-[0.56rem] uppercase tracking-label text-black/32">
-                    <span className="hidden sm:inline">Museum-quality matte · 5 × 7 in</span>
+                    <span className="hidden sm:inline">Museum-quality matte · 5 × 7 in · Secure checkout</span>
                     <span className="text-base text-black/48 transition-transform duration-300 group-hover:translate-x-1">↗</span>
                   </span>
                 </a>
