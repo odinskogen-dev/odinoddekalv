@@ -98,6 +98,7 @@ function Gallery({ variant }: { variant: GalleryVariant }) {
             </div>
             <div className="md:col-span-4 md:col-start-9">
               <p className="max-w-md text-base leading-relaxed text-ink/52">Five photographs from the archive, available as open-edition museum-quality prints.</p>
+              <p className="mt-3 max-w-md text-sm leading-relaxed text-ink/42">Collecting a print supports the independent photography, field work and writing behind this archive.</p>
               <Link href="/prints" className="mt-5 inline-flex font-mono text-[0.64rem] uppercase tracking-label text-blue hover:text-ink">View all prints →</Link>
             </div>
           </div>
