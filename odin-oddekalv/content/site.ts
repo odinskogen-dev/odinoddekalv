@@ -27,6 +27,7 @@ export const nav = [
   { label: "Story", href: "/story" },
   { label: "Field", href: "/field" },
   { label: "Photography", href: "/photography" },
+  { label: "Prints", href: "/prints" },
   { label: "Work", href: "/work" },
   { label: "Notes", href: "/journal" },
 ];
