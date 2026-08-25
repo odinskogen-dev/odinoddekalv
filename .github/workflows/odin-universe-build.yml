@@ -63,10 +63,10 @@ jobs:
             test "$code" = "200"
           done
 
-          grep -q "MORE WHALES" <(curl -L -sS --max-time 20 "$base/field/faroe-islands/")
-          grep -q "Make the consequence visible while the choice is still alive" <(curl -L -sS --max-time 20 "$base/journal/before-the-decision-is-made/")
-          grep -q "Truth is not a tone of voice" <(curl -L -sS --max-time 20 "$base/journal/truth-by-design/")
-          grep -q "The damage is often easiest to see" <(curl -L -sS --max-time 20 "$base/work/")
+          grep -q "BLOODY FJORDS" <(curl -L -sS --max-time 20 "$base/field/faroe-islands/")
+          grep -q "Before the Decision Is Made" <(curl -L -sS --max-time 20 "$base/journal/before-the-decision-is-made/")
+          grep -q "Truth by Design" <(curl -L -sS --max-time 20 "$base/journal/truth-by-design/")
+          grep -q "4PLANET · WHY" <(curl -L -sS --max-time 20 "$base/work/")
           grep -q "SHORT BIO" <(curl -L -sS --max-time 20 "$base/press/")
           grep -q "ALT JEG ELSKER LEVER" <(curl -L -sS --max-time 20 "$base/manifest/")
 
