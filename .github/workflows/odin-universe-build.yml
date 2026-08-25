@@ -45,7 +45,8 @@ jobs:
               notes=$(curl -L -sS --max-time 20 "$base/journal/" || true)
               photography=$(curl -L -sS --max-time 20 "$base/photography/" || true)
               prints=$(curl -L -sS --max-time 20 "$base/prints/" || true)
-              if grep -q "A Future Worth Choosing" <<<"$notes" && grep -q "PHOTOGRAPHY · SELECTED ARCHIVE" <<<"$photography" && grep -q "OPEN EDITION PRINTS" <<<"$prints"; then
+              work=$(curl -L -sS --max-time 20 "$base/work/" || true)
+              if grep -q "Before the Decision Is Made" <<<"$notes" && grep -q "PHOTOGRAPHY · SELECTED ARCHIVE" <<<"$photography" && grep -q "OPEN EDITION PRINTS" <<<"$prints" && grep -q "4PLANET · WHY" <<<"$work"; then
                 ok=1
                 break
               fi
@@ -55,7 +56,7 @@ jobs:
 
           test "$ok" = "1"
 
-          routes=("/story/" "/field/" "/field/faroe-islands/" "/photography/" "/prints/" "/journal/" "/journal/future-worth-choosing/" "/work/" "/archive/" "/press/" "/manifest/")
+          routes=("/story/" "/field/" "/field/faroe-islands/" "/photography/" "/prints/" "/journal/" "/journal/before-the-decision-is-made/" "/journal/truth-by-design/" "/journal/future-worth-choosing/" "/work/" "/archive/" "/press/" "/manifest/" "/now/")
           for route in "${routes[@]}"; do
             code=$(curl -L -sS -o /tmp/route.html --max-time 20 -w '%{http_code}' "$base$route" || true)
             echo "$route -> $code"
@@ -63,13 +64,10 @@ jobs:
           done
 
           grep -q "MORE WHALES" <(curl -L -sS --max-time 20 "$base/field/faroe-islands/")
-          grep -q "PEOPLE ARE INFRASTRUCTURE" <(curl -L -sS --max-time 20 "$base/journal/people-are-infrastructure/")
-          grep -q "THEREFORE" <(curl -L -sS --max-time 20 "$base/work/")
+          grep -q "Make the consequence visible while the choice is still alive" <(curl -L -sS --max-time 20 "$base/journal/before-the-decision-is-made/")
+          grep -q "Truth is not a tone of voice" <(curl -L -sS --max-time 20 "$base/journal/truth-by-design/")
+          grep -q "The damage is often easiest to see" <(curl -L -sS --max-time 20 "$base/work/")
           grep -q "SHORT BIO" <(curl -L -sS --max-time 20 "$base/press/")
           grep -q "ALT JEG ELSKER LEVER" <(curl -L -sS --max-time 20 "$base/manifest/")
-
-          signature_code=$(curl -L -sS -o /tmp/signature.webp --max-time 20 -w '%{http_code}' "$base/images/odin/odin-signature-blue.webp" || true)
-          test "$signature_code" = "200"
-          test -s /tmp/signature.webp
 
           echo "ODIN Universe live health gate passed."
