@@ -4,6 +4,7 @@ import Link from "next/link";
 import Media from "@/components/Media";
 import Markdown from "@/components/Markdown";
 import TypeLabel from "@/components/TypeLabel";
+import { site } from "@/content/site";
 import { getJournal, getJournalPost } from "@/lib/content";
 import { getJournalVisual } from "@/lib/journalVisuals";
 import { formatDate } from "@/lib/utils";
@@ -56,8 +57,8 @@ export default function JournalPostPage({ params }: { params: { slug: string } }
         <div className="mx-auto max-w-reading">
           <Markdown>{post.body}</Markdown>
           <div className="mt-16 border-t border-ink/10 pt-8">
-            <img src="/images/odin/odin-signature-blue.webp" alt="Odin" className="h-auto w-[7.75rem]" />
-            <p className="mt-3 font-mono text-[0.58rem] uppercase tracking-label text-ink/35">Odin Oddekalv · ODIN_</p>
+            <p className="text-lg font-medium tracking-[-0.025em] text-ink">{site.wordmark}</p>
+            <p className="mt-2 font-mono text-[0.58rem] uppercase tracking-label text-ink/35">Notes from an unfinished body of work.</p>
           </div>
           <div className="mt-10 flex flex-wrap gap-2 border-t border-ink/10 pt-8">
             {post.tags.map((t) => <span key={t} className="border border-blue/30 px-2 py-0.5 font-mono text-[0.65rem] uppercase tracking-label text-blue">#{t}</span>)}
