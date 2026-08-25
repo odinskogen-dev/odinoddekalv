@@ -6,21 +6,21 @@ export const projects: Project[] = [
     title: "4PLANET",
     slug: "4planet",
     status: "DEVELOPING",
-    description: "A system for making ecological action easier to understand and support.",
+    description: "A living-planet system for turning better understanding into better choices and useful action.",
     role: "Founder",
     year: "2024 —",
     link: "https://4planet.org",
     tags: ["systems", "ecology", "platform"],
     image: "/images/project-4planet.svg",
     overview:
-      "4PLANET is being built to make ecological action easier to understand, trust, support and follow — across living systems, missions and real-world impact.",
-    why: "Most ecological intent dies in the gap between caring and acting — not from opposition, but from confusion. 4PLANET treats that confusion as a design problem and builds for legibility before scale.",
+      "4PLANET is being built to connect ecological evidence, choices, people and action — making the living world easier to understand before important decisions are locked in, and making useful work easier to find and support.",
+    why: "We already have extraordinary knowledge and people working on ecological problems. Too often, what is known, what can be done and who can do it are separated from the moment a real decision is made. 4PLANET treats that gap as a design problem.",
     currentStatus:
-      "In active development. Product, intelligence, impact and partnership layers are being built and tested in parallel.",
+      "In active development through public prototypes, real field cases, data sources and partnerships.",
     contribution:
-      "Odin founded 4PLANET and leads its direction across mission, product, brand, systems and culture.",
+      "Odin founded 4PLANET and leads its direction across mission, product, systems, brand and culture.",
     relatedLinks: [{ label: "Visit 4PLANET", href: "https://4planet.org" }],
-    relatedJournal: ["building-4planet-in-public", "easier-to-understand"],
+    relatedJournal: ["before-the-decision-is-made", "truth-by-design", "future-worth-choosing", "build-one-good-model"],
   },
   {
     title: "P4NTHER",
@@ -39,7 +39,7 @@ export const projects: Project[] = [
     contribution:
       "Odin works across identity, art direction, strategy and storytelling, shaping how ideas become culture.",
     relatedLinks: [{ label: "Visit P4NTHER", href: "https://p4nther.no" }],
-    relatedJournal: ["not-a-backdrop"],
+    relatedJournal: ["change-moves-through-people", "not-a-backdrop"],
   },
   {
     title: "Photography Archive",
