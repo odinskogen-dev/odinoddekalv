@@ -11,13 +11,13 @@ export const site = {
     { label: "Creative", org: "P4NTHER", href: "https://p4nther.no" },
   ],
   url: "https://oddekalv.org",
-  email: "odin@4planet.org",
+  email: "odin@oddekalv.org",
   links: {
     instagram: "https://instagram.com/4planet____",
     substack: "https://odinoddekalv.substack.com",
     fourplanet: "https://4planet.org",
     p4nther: "https://p4nther.no",
-    email: "mailto:odin@4planet.org",
+    email: "mailto:odin@oddekalv.org",
   },
 };
 
