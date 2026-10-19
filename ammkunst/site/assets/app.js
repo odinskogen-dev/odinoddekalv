@@ -16,4 +16,36 @@ outlet.innerHTML=!first?home():first==="works"?(pathname[1]?detail(ART.find(func
 var form=document.getElementById("enquiry");if(form)form.addEventListener("submit",async function(e){e.preventDefault();var status=document.getElementById("enquiry-status"),button=form.querySelector("button");button.disabled=true;status.textContent="Sending…";try{var r=await fetch("/api/contact",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.fromEntries(new FormData(form)))});if(!r.ok)throw new Error("The contact service is not available yet.");status.textContent="Enquiry delivered.";form.reset()}catch(err){status.textContent=err.message}button.disabled=false});
 var modal=document.getElementById("overlay"),open=document.getElementById("open-menu"),close=document.getElementById("close-menu");function toggle(show){modal.classList.toggle("is-open",show);modal.setAttribute("aria-hidden",String(!show));open.setAttribute("aria-expanded",String(show));document.body.style.overflow=show?"hidden":"";(show?close:open).focus()}
 open.addEventListener("click",function(){toggle(true)});close.addEventListener("click",function(){toggle(false)});modal.querySelectorAll("nav a").forEach(function(a){a.addEventListener("click",function(){toggle(false)})});document.addEventListener("keydown",function(e){if(!modal.classList.contains("is-open"))return;if(e.key==="Escape"){toggle(false);return}if(e.key==="Tab"){var all=[close].concat(Array.from(modal.querySelectorAll("nav a")));var n=all.indexOf(document.activeElement);if(e.shiftKey&&n===0){e.preventDefault();all[all.length-1].focus()}else if(!e.shiftKey&&n===all.length-1){e.preventDefault();all[0].focus()}}});
+}
+function loadBag(){try{var x=JSON.parse(localStorage.getItem("amm-bag")||"[]");return Array.isArray(x)?x.filter(function(v){return typeof v==="string"}):[]}catch(e){return []}}
+function saveBag(x){localStorage.setItem("amm-bag",JSON.stringify(x))}
+function money(n){return new Intl.NumberFormat("nb-NO",{style:"currency",currency:"NOK"}).format(n/100)}
+async function activateStore(){
+ var config;try{var r=await fetch("/api/catalogue",{headers:{"accept":"application/json"},cache:"no-store"});if(!r.ok)return;config=await r.json()}catch(e){return}
+ if(!config.enabled||!Array.isArray(config.products))return;
+ var prices=new Map(config.products.map(function(p){return [p.id,p]}));
+ if(first==="works"&&pathname[1]){
+  var current=ART.find(function(w){return w.id===pathname[1]}),p=current&&prices.get(current.id);
+  if(p){
+   var action=document.querySelector(".side-meta .outline");
+   if(action){
+    action.textContent="Add to bag — "+money(p.amount);
+    action.setAttribute("href","/bag/");
+    action.addEventListener("click",function(e){e.preventDefault();var bag=loadBag();if(!bag.includes(current.id)){bag.push(current.id);saveBag(bag)}location.assign("/bag/")});
+   }
+   var lines=document.querySelectorAll(".side-meta p");if(lines.length)lines[lines.length-1].textContent="Secure checkout by Stripe. Shipping calculated at checkout.";
+   var availability=document.querySelectorAll(".meta-line");if(availability.length)availability[availability.length-1].lastChild.textContent=money(p.amount);
+  }
+ }
+ if(first==="bag"){
+  var cart=loadBag().filter(function(id){return prices.has(id)});
+  var sum=cart.reduce(function(n,id){return n+prices.get(id).amount},0);
+  var target=outlet;
+  target.innerHTML='<div class="container">'+pageTitle("Bag")+'<section class="cart-items">'+cart.map(function(id){var w=ART.find(function(x){return x.id===id});return '<div class="cart-line"><img src="'+w.src+'" alt=""><span>'+safe(w.title)+'<br><small class="muted">'+money(prices.get(id).amount)+'</small></span><button data-remove="'+id+'">Remove</button></div>'}).join("")+'</section>'+(cart.length?'<p style="font-size:14px">Subtotal '+money(sum)+'<br><span class="muted">Shipping calculated at secure checkout.</span></p><button class="outline" style="max-width:340px;margin-top:25px" id="checkout">Checkout with Stripe</button><div class="status" role="status" id="checkout-status"></div>':'<p>Your bag is empty.</p><a href="/works/" class="text-link">View works ↗</a>')+'</div>';
+  target.querySelectorAll("[data-remove]").forEach(function(btn){btn.addEventListener("click",function(){saveBag(loadBag().filter(function(id){return id!==btn.dataset.remove}));location.reload()})});
+  var checkout=document.getElementById("checkout");
+  if(checkout)checkout.addEventListener("click",async function(){checkout.disabled=true;var status=document.getElementById("checkout-status");status.textContent="Opening secure checkout…";try{var r=await fetch("/api/checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({items:cart.map(function(id){return {id,quantity:1}})})});var json=await r.json();if(!r.ok||!json.url||!json.url.startsWith("https://checkout.stripe.com/"))throw new Error("Checkout not available.");location.assign(json.url)}catch(e){status.textContent=e.message;checkout.disabled=false}});
+ }
+}
+activateStore();
 })();
