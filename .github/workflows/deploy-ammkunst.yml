@@ -73,3 +73,11 @@ jobs:
           grep -q 'AMM' /tmp/amm.html
           curl -fsSL --retry 6 --retry-delay 6 https://ammkunst.pages.dev/art/a21.jpg -o /tmp/art.jpg
           test "$(wc -c < /tmp/art.jpg)" -gt 100000
+      - name: Verify live custom domain
+        run: |
+          curl --fail --location --silent --show-error --retry 5 --retry-delay 5 --max-time 20 https://ammkunst.no/ -o /tmp/amm-custom.html
+          grep -q 'AMM' /tmp/amm-custom.html
+          curl --fail --location --silent --show-error --retry 5 --retry-delay 5 --max-time 20 https://ammkunst.no/art/n0388.webp -o /tmp/amm-custom-art.webp
+          test "$(wc -c < /tmp/amm-custom-art.webp)" -gt 20000
+          file /tmp/amm-custom-art.webp | grep -qi webp
+          echo 'AMM deployed and verified on ammkunst.no'
