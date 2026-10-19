@@ -1,0 +1,41 @@
+{
+  "updated_at": "2026-10-19",
+  "store_url": "https://ammkunst.com/",
+  "distinct_works": 21,
+  "duplicate_photo_records_removed": [
+    "a01",
+    "a03",
+    "a07"
+  ],
+  "added_user_uploads": [
+    {
+      "id": "n0390",
+      "working_title": "Colourful Swans",
+      "preview": "/art/n0390.webp",
+      "original_filename": "IMG_0390.jpeg",
+      "artist_approval_needed": true
+    },
+    {
+      "id": "n0389",
+      "working_title": "Leopard & Lizard",
+      "preview": "/art/n0389.webp",
+      "original_filename": "IMG_0389.jpeg",
+      "artist_approval_needed": true
+    },
+    {
+      "id": "n0395",
+      "working_title": "Squirrel & Flowers",
+      "preview": "/art/n0395.webp",
+      "original_filename": "IMG_0395.jpeg",
+      "artist_approval_needed": true
+    },
+    {
+      "id": "n0392",
+      "working_title": "Flower Garden",
+      "preview": "/art/n0392.webp",
+      "original_filename": "IMG_0392.jpeg",
+      "artist_approval_needed": true
+    }
+  ],
+  "note": "Original four user-uploaded JPEGs are preserved in ODIN BRAIN / AMM ART PRINT SALES & DISTRIBUTION / 06 ASSETS & IMAGES / 02 ORIGINALS FINAL SCANS. GitHub contains only optimised public WebP versions of these four works."
+}
