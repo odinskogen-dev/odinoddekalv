@@ -25,5 +25,5 @@ const form=document.getElementById("contact-form");
 if(form){const q=new URLSearchParams(location.search);const w=W.find(x=>x.id===q.get("work"));const message=form.querySelector('textarea[name="message"]');if(w)message.value="I would like to enquire about "+w.title+" (AMM "+w.id.toUpperCase()+").";else if(q.get("works"))message.value="I would like to enquire about: "+q.get("works")+".";
 form.addEventListener("submit",async(e)=>{e.preventDefault();const status=document.getElementById("form-status"),btn=form.querySelector('button[type="submit"]');btn.disabled=true;status.textContent="Sending…";
 try{let r=await fetch("/api/contact",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(Object.fromEntries(new FormData(form)))});if(!r.ok)throw new Error("Enquiry service is not active yet. Please try again later.");status.textContent="Your message was sent.";form.reset()}catch(error){status.textContent=error.message}finally{btn.disabled=false}});
-}}
+}
 })();
