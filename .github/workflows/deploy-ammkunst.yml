@@ -23,6 +23,24 @@ jobs:
             echo '::error::Cloudflare access secrets are not available in this GitHub repository.'
             exit 1
           fi
+      - name: Optimise AMM artwork for web
+        run: |
+          python3 -m pip install --quiet --user Pillow==12.0.0
+          python3 - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageOps
+          source=Path("ammkunst/source-images")
+          destination=Path("ammkunst/site/art")
+          destination.mkdir(parents=True,exist_ok=True)
+          for src in sorted(source.glob("n*.jpeg")):
+              with Image.open(src) as raw:
+                  im=ImageOps.exif_transpose(raw).convert("RGB")
+                  im.thumbnail((1550,1550),Image.Resampling.LANCZOS)
+                  out=destination/(src.stem+".webp")
+                  im.save(out,"WEBP",quality=85,method=6)
+                  print(src.name,raw.size,"→",out.name,im.size,round(out.stat().st_size/1024),"KB")
+          assert len(list(destination.glob("n*.webp")))==7, "Seven real artworks must be optimised"
+          PY
       - name: Create and deploy Pages project
         working-directory: ammkunst
         env:
