@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://ammkunst.no/sitemap.xml
+Sitemap: https://ammkunst.com/sitemap.xml
