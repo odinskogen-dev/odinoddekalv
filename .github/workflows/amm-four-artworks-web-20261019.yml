@@ -1,0 +1,72 @@
+name: AMM four additional originals to web images
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/amm-four-artworks-web-20261019.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  optimise:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: amm/gallery-production
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch four Drive-preserved original image blobs without committing raw files
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/amm-originals
+          while read -r num blob; do
+            echo "Reading source IMG_${num}.jpeg from temporary GitHub blob"
+            curl -fLsS --retry 3 --retry-delay 2 -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/odinskogen-dev/odinoddekalv/git/blobs/$blob" |
+              jq -r '.content' | tr -d '\n' | base64 --decode > "/tmp/amm-originals/IMG_${num}.jpeg"
+            file "/tmp/amm-originals/IMG_${num}.jpeg" | grep -q 'JPEG image'
+            test "$(wc -c < "/tmp/amm-originals/IMG_${num}.jpeg")" -gt 300000
+          done <<'FILES'
+          0390 fbda1e2cd31c05c4ff5516f625853dffd40c166b
+          0389 3bd73cb1ad196c50bf561beb21bab55341572552
+          0395 a6b689ebfd6b1841557903d72e377c7a4ad4863f
+          0392 87a0a76a79232950c74217d47ca828e3ede88ff9
+          FILES
+      - name: Produce display-only WebP assets preserving aspect ratio
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --quiet Pillow==12.0.0
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageOps
+          src=Path('/tmp/amm-originals')
+          out=Path('ammkunst/site/art')
+          out.mkdir(parents=True,exist_ok=True)
+          for num in ['0390','0389','0395','0392']:
+              with Image.open(src/f'IMG_{num}.jpeg') as raw:
+                  im=ImageOps.exif_transpose(raw).convert('RGB')
+                  im.thumbnail((1536,1536),Image.Resampling.LANCZOS)
+                  dst=out/f'n{num}.webp'
+                  im.save(dst, 'WEBP', quality=84, method=6)
+                  assert dst.stat().st_size>50000
+                  print(dst,im.size,round(dst.stat().st_size/1024),'KB')
+          PY
+      - name: Commit only optimised web images to AMM production branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'AMM Gallery Automation'
+          git config user.email 'actions@users.noreply.github.com'
+          git add ammkunst/site/art/n0390.webp ammkunst/site/art/n0389.webp ammkunst/site/art/n0395.webp ammkunst/site/art/n0392.webp
+          if git diff --cached --quiet; then
+            echo 'Four web images already exist.'
+          else
+            git commit -m 'assets(AMM): add four original works as optimised public WebP only'
+            git push origin HEAD:amm/gallery-production
+          fi
